@@ -54,7 +54,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
         </a>
         <a href="#reports" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
           <i className="fas fa-file-medical-alt text-lg"></i>
-          <span className="text-[9px] font-bold uppercase tracking-wider">Laudos</span>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Relatórios</span>
         </a>
       </nav>
     </div>

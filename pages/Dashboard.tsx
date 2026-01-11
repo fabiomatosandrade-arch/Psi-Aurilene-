@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { User, DailyEntry, Mood } from '../types';
@@ -44,7 +43,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           <h2 className="text-3xl font-black mb-1">Olá, {user.fullName.split(' ')[0]}!</h2>
           <p className="text-blue-100 text-sm opacity-90 font-medium">Sua jornada de autocuidado continua.</p>
           <div className="mt-6 flex gap-3">
-            <a href="#new-entry" className="gold-gradient text-blue-900 px-6 py-3 rounded-2xl text-xs font-black shadow-lg uppercase tracking-widest active:scale-95 transition-transform">
+            <a href="#new-entry" className="gold-gradient text-blue-900 px-6 py-3 rounded-2xl text-xs font-black shadow-lg uppercase tracking-widest active:scale-95 transition-transform text-center flex-1">
               Fazer Registro Diário
             </a>
           </div>
@@ -79,7 +78,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
         <div>
           <div className="flex justify-between items-center mb-6 px-1">
             <h3 className="text-xs font-black text-blue-900 uppercase tracking-[0.2em]">Registros Recentes</h3>
-            <a href="#reports" className="text-[9px] font-bold text-amber-600 uppercase underline">Ver Tudo</a>
+            <a href="#reports" className="text-[9px] font-bold text-amber-600 uppercase underline">Ver Relatórios</a>
           </div>
           
           <div className="space-y-4">
