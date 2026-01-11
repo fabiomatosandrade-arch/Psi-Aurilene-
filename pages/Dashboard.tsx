@@ -69,9 +69,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           <div className="absolute top-0 right-0 w-32 h-32 gold-gradient opacity-10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
           <h2 className="text-3xl font-black mb-1">Olá, {user.fullName.split(' ')[0]}!</h2>
           <p className="text-blue-100 text-sm opacity-90 font-medium">Sua jornada de autocuidado continua.</p>
-          <div className="mt-6 flex gap-3">
-            <a href="#new-entry" className="gold-gradient text-blue-900 px-6 py-3 rounded-2xl text-xs font-black shadow-lg uppercase tracking-widest active:scale-95 transition-transform text-center flex-1">
+          <div className="mt-6 flex flex-col gap-3">
+            <a href="#new-entry" className="gold-gradient text-blue-900 px-6 py-4 rounded-2xl text-xs font-black shadow-lg uppercase tracking-widest active:scale-95 transition-transform text-center w-full">
               Fazer Registro Diário
+            </a>
+            <a href="#profile" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-2xl text-[10px] font-bold shadow-lg uppercase tracking-widest active:scale-95 transition-transform text-center w-full flex items-center justify-center gap-2">
+              <i className="fas fa-user-edit"></i> Alterar Meus Dados
             </a>
           </div>
         </div>

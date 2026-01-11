@@ -59,17 +59,6 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [allUserEntries, filter]);
 
-  const getMoodLabel = (mood: Mood) => {
-    switch (mood) {
-      case Mood.VERY_BAD: return 'Muito Mal';
-      case Mood.BAD: return 'Mal';
-      case Mood.NEUTRAL: return 'Neutro';
-      case Mood.GOOD: return 'Bem';
-      case Mood.EXCELLENT: return 'Muito Bem';
-      default: return 'Indefinido';
-    }
-  };
-
   const getMoodDetails = (mood: Mood) => {
     switch (mood) {
       case Mood.VERY_BAD: return { emoji: '😞', label: 'Muito Mal', color: 'text-red-500' };
@@ -94,36 +83,6 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
         setIsGenerating(false);
       }
     }, 800);
-  };
-
-  const generateShareText = () => {
-    const periodLabel = filter === 'all' ? 'Completo' : filter === 'week' ? 'Semana' : filter === 'month' ? 'Mês' : 'Ano';
-    const latest = filteredEntries[0];
-    let text = `*Relatório Terapêutico - Psi. Aurilene*\n`;
-    text += `Paciente: ${user.fullName}\n`;
-    text += `Período: ${periodLabel}\n`;
-    text += `Registros no período: ${filteredEntries.length}\n`;
-    
-    if (latest) {
-      text += `\n*Último Registro (${new Date(latest.date).toLocaleDateString('pt-BR')}):*\n`;
-      text += `Humor: ${getMoodLabel(latest.mood)}\n`;
-      text += `Nota: "${latest.notes.substring(0, 100)}${latest.notes.length > 100 ? '...' : ''}"`;
-    }
-    
-    return encodeURIComponent(text);
-  };
-
-  const handleSendWhatsApp = () => {
-    if (filteredEntries.length === 0) return;
-    const text = generateShareText();
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-  };
-
-  const handleSendEmail = () => {
-    if (filteredEntries.length === 0) return;
-    const subject = encodeURIComponent(`Relatório Terapêutico - ${user.fullName}`);
-    const body = generateShareText();
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
   const hasMore = filteredEntries.length > visibleCount;
@@ -172,23 +131,6 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
             {isGenerating ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-file-pdf"></i>}
             {isGenerating ? 'GERANDO...' : 'BAIXAR RELATÓRIO PDF'}
           </button>
-
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={handleSendWhatsApp}
-              disabled={filteredEntries.length === 0}
-              className="flex items-center justify-center gap-2 bg-emerald-500 text-white p-3 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-transform disabled:opacity-50"
-            >
-              <i className="fab fa-whatsapp"></i> WhatsApp
-            </button>
-            <button
-              onClick={handleSendEmail}
-              disabled={filteredEntries.length === 0}
-              className="flex items-center justify-center gap-2 bg-blue-600 text-white p-3 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-transform disabled:opacity-50"
-            >
-              <i className="fas fa-envelope"></i> E-mail
-            </button>
-          </div>
           
           <button
             onClick={() => window.location.hash = '#dashboard'}

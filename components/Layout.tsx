@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface LayoutProps {
@@ -43,7 +44,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
       </main>
 
       {/* Navigation Bar */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[360px] brand-gradient rounded-3xl flex justify-around p-4 z-30 shadow-2xl border border-white/20">
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[400px] brand-gradient rounded-3xl flex justify-around items-center p-4 z-30 shadow-2xl border border-white/20">
         <a href="#dashboard" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
           <i className="fas fa-home text-lg"></i>
           <span className="text-[9px] font-bold uppercase tracking-wider">Início</span>
@@ -55,6 +56,10 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
         <a href="#reports" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
           <i className="fas fa-file-medical-alt text-lg"></i>
           <span className="text-[9px] font-bold uppercase tracking-wider">Relatórios</span>
+        </a>
+        <a href="#profile" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
+          <i className="fas fa-user-circle text-lg"></i>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Perfil</span>
         </a>
       </nav>
     </div>
