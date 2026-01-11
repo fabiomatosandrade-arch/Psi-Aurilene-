@@ -57,10 +57,16 @@ const Profile: React.FC<ProfileProps> = ({ user, onUpdate }) => {
     }
 
     const users: User[] = JSON.parse(localStorage.getItem('psicolog_users') || '[]');
+    
+    // Validar se o novo CPF já pertence a outro usuário
+    if (users.some(u => u.cpf === cpf && u.id !== user.id)) {
+      setError('Este CPF já está sendo utilizado por outro paciente.');
+      return;
+    }
+
     const userIndex = users.findIndex(u => u.id === user.id);
 
     if (userIndex !== -1) {
-      // Verificar duplicidade de email ou usuário se necessário (pulando para simplicidade de edição)
       const updatedUser: User = {
         ...user,
         fullName,

@@ -55,10 +55,18 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     }
 
     const users: User[] = JSON.parse(localStorage.getItem('psicolog_users') || '[]');
+    
+    // Bloqueio de duplicidade de CPF
+    if (users.some(u => u.cpf === cpf)) {
+      setError('Este CPF já possui um cadastro ativo.');
+      return;
+    }
+
     if (users.some(u => u.username === username)) {
       setError('Este nome de usuário já está em uso.');
       return;
     }
+    
     if (users.some(u => u.email === email)) {
       setError('Este e-mail já está cadastrado.');
       return;
