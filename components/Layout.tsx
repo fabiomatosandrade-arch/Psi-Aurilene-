@@ -27,19 +27,30 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-6 pb-32">
+      <main className="flex-1 overflow-y-auto p-6 pb-40">
         {children}
         
-        <div className="mt-16 pt-8 border-t border-slate-50 text-center">
-          <p className="text-[10px] font-black text-blue-900 uppercase tracking-[0.2em] mb-2">Psi. Aurilene Santiago</p>
+        {/* Footer com Destaque solicitado */}
+        <div className="mt-20 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 text-center relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-24 h-24 gold-gradient opacity-10 rounded-full blur-2xl"></div>
+          
+          <h4 className="text-lg font-black text-blue-900 uppercase tracking-tight mb-1">
+            Psi. Aurilene Santiago
+          </h4>
+          <div className="h-0.5 w-12 gold-gradient mx-auto mb-4 rounded-full"></div>
+          
           <a 
             href="https://www.psicologiaasantiago.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[9px] font-medium text-slate-400 uppercase tracking-[0.1em] hover:text-amber-600 transition-colors"
+            className="inline-block px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-[11px] font-bold text-amber-600 uppercase tracking-[0.15em] shadow-sm hover:shadow-md hover:border-amber-300 transition-all"
           >
             psicologiaasantiago.com
           </a>
+          
+          <p className="mt-6 text-[8px] text-slate-400 font-medium uppercase tracking-[0.2em] opacity-60">
+            Acompanhamento Terapêutico Profissional
+          </p>
         </div>
       </main>
 

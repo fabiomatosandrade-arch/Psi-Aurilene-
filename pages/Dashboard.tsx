@@ -76,14 +76,16 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           </div>
         </div>
 
-        <div className="bg-white border-2 border-slate-100 p-5 rounded-[2rem] flex items-center justify-between shadow-sm">
+        {/* Seção Terapia Atualizada */}
+        <div className="bg-white border-2 border-slate-100 p-6 rounded-[2rem] flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 brand-gradient rounded-2xl flex items-center justify-center text-amber-400 shadow-inner">
               <i className="fas fa-calendar-check"></i>
             </div>
             <div>
-              <p className="text-[10px] font-black text-blue-900 uppercase tracking-widest">Sua Terapia</p>
-              <p className="text-xs text-slate-500">Inicie ou continue a sua terapia</p>
+              <p className="text-sm font-bold text-blue-900 leading-tight">
+                Inicie ou continue sua terapia
+              </p>
             </div>
           </div>
           <a href="#booking" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-blue-900 hover:bg-amber-50 hover:text-amber-600 transition-colors">
