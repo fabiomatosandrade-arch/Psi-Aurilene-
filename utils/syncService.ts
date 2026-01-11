@@ -9,9 +9,9 @@ const MASTER_KEY = '$2b$10$ExemploKeyParaDemo12345'; // Em prod, usar variável 
 declare const CryptoJS: any;
 
 export const SyncService = {
-  // Gera uma chave de criptografia única baseada na senha do usuário
+  // Gera uma chave de criptografia única baseada na senha e nome de usuário
   getSecretKey: (user: User) => {
-    return `${user.password}_${user.cpf.replace(/\D/g, '')}`;
+    return `${user.password}_${user.username.toLowerCase()}`;
   },
 
   // Criptografa e salva na nuvem
@@ -21,7 +21,7 @@ export const SyncService = {
       const userEntries = allEntries.filter(e => e.userId === user.id);
       
       const dataToSync = {
-        user: { ...user, password: '' }, // Não enviamos a senha original
+        user: { ...user, password: '' }, // Não enviamos a senha original no payload
         entries: userEntries,
         lastSync: new Date().toISOString()
       };
@@ -30,10 +30,8 @@ export const SyncService = {
       const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(dataToSync), secretKey).toString();
 
       // Simulando o salvamento (Em produção, aqui seria o seu fetch para o backend)
-      // Usamos o localStorage para simular o "servidor remoto" que é compartilhado
-      // mas na prática isso seria um POST para uma API.
       const cloudStore = JSON.parse(localStorage.getItem('psicolog_cloud_mock') || '{}');
-      cloudStore[user.username] = encryptedData;
+      cloudStore[user.username.toLowerCase()] = encryptedData;
       localStorage.setItem('psicolog_cloud_mock', JSON.stringify(cloudStore));
       
       return true;
@@ -43,15 +41,15 @@ export const SyncService = {
     }
   },
 
-  // Busca da nuvem e descriptografa
-  pullFromCloud: async (username: string, passwordAttempt: string, cpfAttempt: string) => {
+  // Busca da nuvem e descriptografa usando apenas login e senha
+  pullFromCloud: async (username: string, passwordAttempt: string) => {
     try {
       const cloudStore = JSON.parse(localStorage.getItem('psicolog_cloud_mock') || '{}');
-      const encryptedData = cloudStore[username];
+      const encryptedData = cloudStore[username.toLowerCase()];
 
       if (!encryptedData) return null;
 
-      const secretKey = `${passwordAttempt}_${cpfAttempt.replace(/\D/g, '')}`;
+      const secretKey = `${passwordAttempt}_${username.toLowerCase()}`;
       const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
       const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 

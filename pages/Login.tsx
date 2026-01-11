@@ -10,36 +10,27 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [cpf, setCpf] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSearchingCloud, setIsSearchingCloud] = useState(false);
   const [error, setError] = useState('');
-
-  const formatCPF = (value: string) => {
-    return value
-      .replace(/\D/g, '')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-      .replace(/(-\d{2})\d+?$/, '$1');
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
-    if (!username || !password || !cpf) {
-      setError('Por favor, preencha todos os campos, incluindo o CPF para sincronização.');
+    if (!username || !password) {
+      setError('Por favor, preencha usuário e senha.');
       return;
     }
 
     const users: User[] = JSON.parse(localStorage.getItem('psicolog_users') || '[]');
-    let user = users.find(u => u.username === username && u.password === password && u.cpf === cpf);
+    // Busca local apenas por usuário e senha
+    let user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
     
     if (!user) {
-      // Se não achar local, tenta buscar na nuvem (permite trocar de aparelho)
+      // Se não achar local, tenta buscar na nuvem para permitir troca de aparelho
       setIsSearchingCloud(true);
-      const cloudUser = await SyncService.pullFromCloud(username, password, cpf);
+      const cloudUser = await SyncService.pullFromCloud(username, password);
       setIsSearchingCloud(false);
       
       if (cloudUser) {
@@ -50,7 +41,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     if (user) {
       onLogin(user);
     } else {
-      setError('Acesso negado. Verifique os dados ou certifique-se de que já possui um cadastro.');
+      setError('Acesso negado. Usuário ou senha incorretos.');
     }
   };
 
@@ -76,17 +67,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">CPF (Necessário para Sincronização)</label>
-            <input
-              type="text"
-              value={cpf}
-              onChange={(e) => setCpf(formatCPF(e.target.value))}
-              className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-800 outline-none transition-all text-sm"
-              placeholder="000.000.000-00"
-            />
-          </div>
-
-          <div>
             <div className="flex justify-between items-center mb-2 ml-1">
               <label className="block text-[10px] font-bold text-slate-400 uppercase">Senha</label>
               <a href="#forgot-password" className="text-[9px] font-black text-amber-600 uppercase hover:underline">Esqueceu?</a>
@@ -102,7 +82,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               <button 
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-600 transition-colors"
               >
                 <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
               </button>
@@ -128,7 +108,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         <div className="mt-8 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
           <p className="text-[9px] text-emerald-700 leading-relaxed font-bold uppercase tracking-[0.1em]">
             <i className="fas fa-globe mr-2"></i>
-            Acesso Liberado em qualquer PC ou Celular. Seus dados viajam com você de forma segura e criptografada.
+            Acesse de qualquer lugar apenas com seu login e senha.
           </p>
         </div>
 
