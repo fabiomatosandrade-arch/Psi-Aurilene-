@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
-      // Garante que o objeto process exista para evitar erros de ReferenceError
+      // Inicialização global do ambiente
       window.process = window.process || { env: {} };
       window.process.env = window.process.env || {};
       window.process.env.NODE_ENV = 'production';
-      window.process.env.API_KEY = window.process.env.API_KEY || '';
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
@@ -20,8 +19,8 @@
         .gold-gradient { background: linear-gradient(135deg, #d4af37 0%, #f9e295 50%, #b8860b 100%); }
         .blue-gold-gradient { background: linear-gradient(135deg, #1e3a8a 0%, #d4af37 100%); }
         .gold-text { background: linear-gradient(135deg, #b8860b 0%, #d4af37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .blue-text { color: #1e3a8a; }
         
+        /* Estilo para quando o app ainda está carregando */
         #root:empty::before {
             content: 'Psi.Aurilene';
             display: flex;
@@ -32,6 +31,7 @@
             font-weight: 800;
             font-size: 2rem;
             letter-spacing: -0.05em;
+            background: #f8fafc;
         }
     </style>
     <script type="importmap">
@@ -51,5 +51,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900">
     <div id="root"></div>
+    <!-- Script principal que carrega a aplicação -->
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>

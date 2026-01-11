@@ -1,8 +1,5 @@
-
 import { jsPDF } from 'jspdf';
 import { DailyEntry, User, Mood } from '../types';
-// Fixed: Importing getAppLogo instead of non-existent LOGO_AS_GOLD
-import { getAppLogo } from '../constants';
 
 const moodToLabel = (mood: Mood) => {
   switch (mood) {
@@ -19,33 +16,29 @@ export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
   const doc = new jsPDF();
   const sortedEntries = [...entries].sort((a, b) => b.timestamp - a.timestamp);
 
-  // Logo e Título
-  try {
-    // Fixed: Using getAppLogo() which correctly retrieves the current branding (custom or default)
-    doc.addImage(getAppLogo(), 'PNG', 85, 10, 40, 40); 
-  } catch(e) {
-    // Fallback se a imagem falhar
-    doc.setFontSize(30);
-    doc.setTextColor(184, 134, 11);
-    doc.text('AS', 105, 30, { align: 'center' });
-  }
+  // Título Textual Elegante
+  doc.setFontSize(24);
+  doc.setTextColor(30, 58, 138); // Azul Marinho
+  doc.setFont('helvetica', 'bold');
+  doc.text('Psi. Aurilene Santiago', 105, 30, { align: 'center' });
 
-  doc.setFontSize(16);
-  doc.setTextColor(50, 50, 50);
-  doc.text('Relatório Terapêutico Individual', 105, 55, { align: 'center' });
+  doc.setFontSize(14);
+  doc.setTextColor(184, 134, 11); // Dourado
+  doc.text('Relatório Terapêutico Individual', 105, 42, { align: 'center' });
 
   // Info Paciente
   doc.setFontSize(10);
   doc.setTextColor(100, 100, 100);
-  doc.text(`Paciente: ${user.fullName}`, 20, 70);
-  doc.text(`CPF: ${user.cpf}`, 20, 76);
-  doc.text(`Período: ${new Date(sortedEntries[sortedEntries.length-1].date).toLocaleDateString()} a ${new Date(sortedEntries[0].date).toLocaleDateString()}`, 20, 82);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Paciente: ${user.fullName}`, 20, 60);
+  doc.text(`CPF: ${user.cpf}`, 20, 66);
+  doc.text(`Período: ${new Date(sortedEntries[sortedEntries.length-1].date).toLocaleDateString()} a ${new Date(sortedEntries[0].date).toLocaleDateString()}`, 20, 72);
 
   doc.setDrawColor(212, 175, 55);
-  doc.line(20, 88, 190, 88);
+  doc.line(20, 78, 190, 78);
 
   // Registros
-  let y = 100;
+  let y = 90;
   sortedEntries.forEach((entry) => {
     if (y > 250) {
       doc.addPage();

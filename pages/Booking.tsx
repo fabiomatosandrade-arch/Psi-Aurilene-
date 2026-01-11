@@ -18,12 +18,10 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
   return (
     <Layout title="Agendar" onBack={() => window.location.hash = '#dashboard'}>
       <div className="space-y-6 text-center py-4">
-        <div className="w-24 h-24 brand-gradient rounded-full flex items-center justify-center mx-auto border-4 border-amber-200 shadow-xl p-4 overflow-hidden">
-          <img src="https://i.postimg.cc/k47M9f28/logo-as.png" alt="Logo" className="w-full h-full object-contain" />
-        </div>
-        <div>
-          <h2 className="text-xl font-black text-blue-900 uppercase tracking-tight">Agende sua Sessão</h2>
-          <p className="text-sm text-slate-500 px-4 mt-2">Escolha o canal de sua preferência para marcar seu próximo horário com a Dra. Aurilene.</p>
+        <div className="py-6">
+          <h2 className="text-2xl font-black text-blue-900 uppercase tracking-tight">Agende sua Sessão</h2>
+          <div className="h-1 w-12 gold-gradient mx-auto mt-2 mb-4"></div>
+          <p className="text-sm text-slate-500 px-4">Escolha o canal de sua preferência para marcar seu próximo horário com a Dra. Aurilene.</p>
         </div>
 
         <div className="space-y-4 px-2">

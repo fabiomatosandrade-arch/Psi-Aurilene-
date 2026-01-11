@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User } from '../types';
 
@@ -81,11 +80,9 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
       <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-10 border border-slate-100">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 brand-gradient rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-amber-200 shadow-lg p-3">
-             <img src="https://i.postimg.cc/k47M9f28/logo-as.png" alt="Logo" className="w-full h-full object-contain" />
-          </div>
-          <h2 className="text-2xl font-black text-blue-900 uppercase tracking-tighter">Criar Conta</h2>
-          <p className="text-slate-400 text-[10px] uppercase tracking-widest font-bold mt-1">Inicie seu acompanhamento hoje</p>
+          <h2 className="text-3xl font-black text-blue-900 uppercase tracking-tighter">Criar Conta</h2>
+          <div className="h-1 w-12 gold-gradient mx-auto mt-2"></div>
+          <p className="text-slate-400 text-[10px] uppercase tracking-widest font-bold mt-2">Portal Terapêutico Psi. Aurilene</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

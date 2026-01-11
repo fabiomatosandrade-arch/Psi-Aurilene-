@@ -1,6 +1,4 @@
-
 import React from 'react';
-import { getAppLogo } from '../constants';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,8 +8,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => {
-  const currentLogo = getAppLogo();
-
   return (
     <div className="max-w-md mx-auto min-h-screen flex flex-col bg-white shadow-2xl relative">
       {/* Header */}
@@ -34,14 +30,12 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
         {children}
         
         <div className="mt-16 pt-8 border-t border-slate-50 text-center">
-          <div className="w-10 h-10 brand-gradient rounded-full mx-auto mb-3 flex items-center justify-center overflow-hidden">
-             <img src={currentLogo} alt="Mini Logo" className="w-full h-full object-cover" />
-          </div>
+          <p className="text-[10px] font-black text-blue-900 uppercase tracking-[0.2em] mb-2">Psi. Aurilene Santiago</p>
           <a 
             href="https://www.psicologiaasantiago.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[10px] font-black text-blue-900 uppercase tracking-[0.2em] hover:text-amber-600 transition-colors"
+            className="inline-flex items-center gap-2 text-[9px] font-medium text-slate-400 uppercase tracking-[0.1em] hover:text-amber-600 transition-colors"
           >
             psicologiaasantiago.com
           </a>
@@ -61,10 +55,6 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
         <a href="#reports" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
           <i className="fas fa-file-medical-alt text-lg"></i>
           <span className="text-[9px] font-bold uppercase tracking-wider">Laudos</span>
-        </a>
-        <a href="#logo-gen" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
-          <i className="fas fa-paint-brush text-lg"></i>
-          <span className="text-[9px] font-bold uppercase tracking-wider">Marca</span>
         </a>
       </nav>
     </div>
