@@ -1,12 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
-import { AuthState, User, DailyEntry } from './types';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import NewEntry from './pages/NewEntry';
-import Reports from './pages/Reports';
-import Booking from './pages/Booking';
+import { AuthState, User } from './types.ts';
+import Login from './pages/Login.tsx';
+import Register from './pages/Register.tsx';
+import Dashboard from './pages/Dashboard.tsx';
+import NewEntry from './pages/NewEntry.tsx';
+import Reports from './pages/Reports.tsx';
+import Booking from './pages/Booking.tsx';
 
 const App: React.FC = () => {
   const [auth, setAuth] = useState<AuthState>({
@@ -19,7 +18,6 @@ const App: React.FC = () => {
     const handleHashChange = () => setRoute(window.location.hash);
     window.addEventListener('hashchange', handleHashChange);
 
-    // Persist login session (Simple demo implementation)
     const storedUser = localStorage.getItem('psicolog_session');
     if (storedUser) {
       setAuth({ user: JSON.parse(storedUser), isAuthenticated: true });

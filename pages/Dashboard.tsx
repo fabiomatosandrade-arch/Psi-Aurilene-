@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { User, DailyEntry, Mood } from '../types';
+import Layout from '../components/Layout.tsx';
+import { User, DailyEntry, Mood } from '../types.ts';
 
 interface DashboardProps {
   user: User;
@@ -39,7 +38,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       }
     >
       <div className="space-y-6">
-        {/* Welcome Section */}
         <div className="gold-gradient rounded-2xl p-6 text-white shadow-lg">
           <h2 className="text-2xl font-bold mb-1">Olá, {user.fullName.split(' ')[0]}!</h2>
           <p className="text-amber-50 text-sm opacity-90">Como você está se sentindo hoje?</p>
@@ -50,7 +48,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           </div>
         </div>
 
-        {/* Quick Actions Card */}
         <div className="bg-amber-50 border border-amber-100 p-4 rounded-2xl flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
@@ -66,7 +63,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           </a>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
             <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Registros</p>
@@ -78,7 +74,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           </div>
         </div>
 
-        {/* History List */}
         <div>
           <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 px-1">Histórico Recente</h3>
           <div className="space-y-4">
