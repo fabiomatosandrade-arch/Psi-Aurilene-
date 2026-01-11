@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout.tsx';
-import { User, DailyEntry, Mood } from '../types.ts';
+import Layout from '../components/Layout';
+import { User, DailyEntry, Mood } from '../types';
 
 interface DashboardProps {
   user: User;
@@ -30,77 +31,77 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
 
   return (
     <Layout 
-      title="Minha Jornada" 
+      title="Portal do Paciente" 
       actions={
-        <button onClick={onLogout} className="text-slate-400 hover:text-red-500 p-2">
+        <button onClick={onLogout} className="w-10 h-10 flex items-center justify-center text-blue-900 bg-slate-50 hover:bg-red-50 hover:text-red-500 rounded-full transition-all">
           <i className="fas fa-sign-out-alt"></i>
         </button>
       }
     >
       <div className="space-y-6">
-        <div className="gold-gradient rounded-2xl p-6 text-white shadow-lg">
-          <h2 className="text-2xl font-bold mb-1">Olá, {user.fullName.split(' ')[0]}!</h2>
-          <p className="text-amber-50 text-sm opacity-90">Como você está se sentindo hoje?</p>
-          <div className="mt-4 flex gap-2">
-            <a href="#new-entry" className="bg-white text-amber-700 px-4 py-2 rounded-lg text-sm font-bold shadow-sm active:scale-95 transition-transform">
-              Registrar Agora
+        <div className="brand-gradient rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 gold-gradient opacity-10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+          <h2 className="text-3xl font-black mb-1">Olá, {user.fullName.split(' ')[0]}!</h2>
+          <p className="text-blue-100 text-sm opacity-90 font-medium">Sua jornada de autocuidado continua.</p>
+          <div className="mt-6 flex gap-3">
+            <a href="#new-entry" className="gold-gradient text-blue-900 px-6 py-3 rounded-2xl text-xs font-black shadow-lg uppercase tracking-widest active:scale-95 transition-transform">
+              Fazer Registro Diário
             </a>
           </div>
         </div>
 
-        <div className="bg-amber-50 border border-amber-100 p-4 rounded-2xl flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
-              <i className="fas fa-calendar-alt"></i>
+        <div className="bg-white border-2 border-slate-100 p-5 rounded-[2rem] flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 brand-gradient rounded-2xl flex items-center justify-center text-amber-400 shadow-inner">
+              <i className="fas fa-calendar-check"></i>
             </div>
             <div>
-              <p className="text-xs font-bold text-amber-800 uppercase tracking-tight">Próxima Sessão</p>
-              <p className="text-[10px] text-amber-600">Mantenha sua terapia em dia</p>
+              <p className="text-[10px] font-black text-blue-900 uppercase tracking-widest">Sua Terapia</p>
+              <p className="text-xs text-slate-500">Agende sua próxima sessão</p>
             </div>
           </div>
-          <a href="#booking" className="text-[10px] font-black text-amber-700 uppercase tracking-widest hover:underline">
-            Agendar <i className="fas fa-chevron-right ml-1"></i>
+          <a href="#booking" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-blue-900 hover:bg-amber-50 hover:text-amber-600 transition-colors">
+            <i className="fas fa-arrow-right"></i>
           </a>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Registros</p>
-            <p className="text-2xl font-bold text-slate-700">{entries.length}</p>
+          <div className="bg-slate-50 p-6 rounded-[2rem] border border-white shadow-sm">
+            <p className="text-[9px] text-blue-900 font-black uppercase tracking-widest mb-2">Total de Notas</p>
+            <p className="text-3xl font-black text-slate-800">{entries.length}</p>
           </div>
-          <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Último humor</p>
-            <p className="text-2xl font-bold">{entries.length > 0 ? getMoodEmoji(entries[0].mood) : '--'}</p>
+          <div className="bg-amber-50 p-6 rounded-[2rem] border border-white shadow-sm">
+            <p className="text-[9px] text-amber-700 font-black uppercase tracking-widest mb-2">Último Humor</p>
+            <p className="text-3xl font-black">{entries.length > 0 ? getMoodEmoji(entries[0].mood) : '--'}</p>
           </div>
         </div>
 
         <div>
-          <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 px-1">Histórico Recente</h3>
+          <div className="flex justify-between items-center mb-6 px-1">
+            <h3 className="text-xs font-black text-blue-900 uppercase tracking-[0.2em]">Registros Recentes</h3>
+            <a href="#reports" className="text-[9px] font-bold text-amber-600 uppercase underline">Ver Tudo</a>
+          </div>
+          
           <div className="space-y-4">
             {entries.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-200">
-                <i className="fas fa-feather-alt text-4xl text-slate-200 mb-3"></i>
-                <p className="text-slate-400 text-sm">Você ainda não possui registros.</p>
+              <div className="text-center py-16 bg-white rounded-[2rem] border-2 border-dashed border-slate-100">
+                <i className="fas fa-notes-medical text-5xl text-slate-100 mb-4"></i>
+                <p className="text-slate-400 text-sm font-medium">Inicie seu primeiro registro hoje.</p>
               </div>
             ) : (
-              entries.slice(0, 5).map((entry) => (
-                <div key={entry.id} className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded">
-                      {new Date(entry.date).toLocaleDateString('pt-BR')}
+              entries.slice(0, 3).map((entry) => (
+                <div key={entry.id} className="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-amber-200 transition-all group">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-[10px] font-black text-blue-900 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-wider">
+                      {new Date(entry.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
                     </span>
-                    <span className="text-2xl">{getMoodEmoji(entry.mood)}</span>
+                    <span className="text-2xl group-hover:scale-125 transition-transform duration-500">{getMoodEmoji(entry.mood)}</span>
                   </div>
-                  <p className="text-slate-600 text-sm line-clamp-2 leading-relaxed italic">
+                  <p className="text-slate-600 text-sm leading-relaxed line-clamp-2 italic">
                     "{entry.notes}"
                   </p>
                 </div>
               ))
-            )}
-            {entries.length > 5 && (
-               <a href="#reports" className="block text-center text-xs font-bold text-slate-400 hover:text-amber-600 uppercase py-2">
-                 Ver histórico completo
-               </a>
             )}
           </div>
         </div>

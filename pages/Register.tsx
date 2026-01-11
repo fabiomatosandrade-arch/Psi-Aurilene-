@@ -79,110 +79,107 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-100">
-        <h2 className="text-2xl font-bold gold-text mb-2 text-center">CADASTRO</h2>
-        <p className="text-slate-400 text-sm mb-8 text-center">Crie sua conta para iniciar o acompanhamento</p>
+      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-10 border border-slate-100">
+        <div className="text-center mb-8">
+          <div className="w-20 h-20 brand-gradient rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-amber-200 shadow-lg p-3">
+             <img src="https://i.postimg.cc/k47M9f28/logo-as.png" alt="Logo" className="w-full h-full object-contain" />
+          </div>
+          <h2 className="text-2xl font-black text-blue-900 uppercase tracking-tighter">Criar Conta</h2>
+          <p className="text-slate-400 text-[10px] uppercase tracking-widest font-bold mt-1">Inicie seu acompanhamento hoje</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Nome Completo</label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
-                placeholder="Ex: João Silva"
-              />
-            </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Nome Completo</label>
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleInputChange}
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
+              placeholder="Ex: Maria Oliveira"
+            />
+          </div>
 
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Usuário</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Usuário</label>
               <input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
-                placeholder="usuario123"
+                className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
+                placeholder="usuario"
               />
             </div>
-
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">CPF</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5 ml-1">CPF</label>
               <input
                 type="text"
                 name="cpf"
                 value={formData.cpf}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
                 placeholder="000.000.000-00"
               />
             </div>
+          </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Data de Nascimento</label>
-              <input
-                type="date"
-                name="birthDate"
-                value={formData.birthDate}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
-              />
-            </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Data de Nascimento</label>
+            <input
+              type="date"
+              name="birthDate"
+              value={formData.birthDate}
+              onChange={handleInputChange}
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
+            />
+          </div>
 
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Senha</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Senha</label>
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
                 placeholder="******"
               />
             </div>
-
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Confirmar Senha</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Confirmar</label>
               <input
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
                 placeholder="******"
               />
             </div>
           </div>
 
           {error && (
-            <p className="text-red-500 text-xs font-medium text-center bg-red-50 p-2 rounded-lg">{error}</p>
+            <div className="bg-red-50 text-red-500 text-[10px] font-bold p-3 rounded-xl text-center border border-red-100 uppercase tracking-wider">
+              {error}
+            </div>
           )}
 
           <button
             type="submit"
-            className="w-full gold-gradient text-white font-bold py-3 rounded-xl shadow-lg hover:opacity-90 transition-opacity active:scale-[0.98] mt-4"
+            className="w-full brand-gradient text-white font-black py-4 rounded-2xl shadow-lg uppercase tracking-widest text-[10px] mt-4 active:scale-95 transition-transform"
           >
-            Cadastrar
+            Finalizar Cadastro
           </button>
         </form>
 
-        <div className="mt-8 text-center space-y-4">
-          <p className="text-sm text-slate-500">
-            Já possui conta? <a href="#login" className="font-bold text-amber-600 hover:underline">Voltar para o Login</a>
+        <div className="mt-8 text-center">
+          <p className="text-xs text-slate-500 font-medium">
+            Já possui uma conta? <a href="#login" className="font-black text-blue-900 border-b-2 border-amber-400">Fazer Login</a>
           </p>
-          <div className="pt-2">
-            <a 
-              href="https://www.psicologiaasantiago.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-[10px] font-black gold-text uppercase tracking-widest hover:opacity-70 transition-opacity"
-            >
-              Visite nosso site profissional
-            </a>
-          </div>
         </div>
       </div>
     </div>

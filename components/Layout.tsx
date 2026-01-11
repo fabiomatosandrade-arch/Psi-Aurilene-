@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { getAppLogo } from '../constants';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,17 +10,19 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => {
+  const currentLogo = getAppLogo();
+
   return (
-    <div className="max-w-md mx-auto min-h-screen flex flex-col bg-white shadow-xl relative">
+    <div className="max-w-md mx-auto min-h-screen flex flex-col bg-white shadow-2xl relative">
       {/* Header */}
-      <header className="p-4 flex items-center justify-between border-b sticky top-0 bg-white z-10">
+      <header className="p-5 flex items-center justify-between border-b sticky top-0 bg-white z-20">
         <div className="flex items-center gap-3">
           {onBack && (
-            <button onClick={onBack} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
-              <i className="fas fa-chevron-left text-slate-600"></i>
+            <button onClick={onBack} className="w-10 h-10 flex items-center justify-center bg-slate-50 hover:bg-slate-100 rounded-full transition-colors">
+              <i className="fas fa-chevron-left text-blue-900"></i>
             </button>
           )}
-          <h1 className="text-xl font-bold gold-text uppercase tracking-tight">{title}</h1>
+          <h1 className="text-lg font-black text-blue-900 uppercase tracking-tighter">{title}</h1>
         </div>
         <div className="flex items-center gap-2">
           {actions}
@@ -27,40 +30,41 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-4 pb-24">
+      <main className="flex-1 overflow-y-auto p-6 pb-32">
         {children}
         
-        {/* Footer Link */}
-        <div className="mt-12 pt-6 border-t border-slate-50 text-center">
+        <div className="mt-16 pt-8 border-t border-slate-50 text-center">
+          <div className="w-10 h-10 brand-gradient rounded-full mx-auto mb-3 flex items-center justify-center overflow-hidden">
+             <img src={currentLogo} alt="Mini Logo" className="w-full h-full object-cover" />
+          </div>
           <a 
             href="https://www.psicologiaasantiago.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[10px] font-black gold-text uppercase tracking-[0.2em] hover:opacity-70 transition-opacity"
+            className="inline-flex items-center gap-2 text-[10px] font-black text-blue-900 uppercase tracking-[0.2em] hover:text-amber-600 transition-colors"
           >
-            <i className="fas fa-globe"></i>
-            www.psicologiaasantiago.com
+            psicologiaasantiago.com
           </a>
         </div>
       </main>
 
-      {/* Navigation Bar (Mobile Style) */}
-      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t flex justify-around p-3 z-10 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-        <a href="#dashboard" className="flex flex-col items-center gap-1 text-slate-400 hover:text-amber-600 transition-colors">
+      {/* Navigation Bar */}
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[360px] brand-gradient rounded-3xl flex justify-around p-4 z-30 shadow-2xl border border-white/20">
+        <a href="#dashboard" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
           <i className="fas fa-home text-lg"></i>
-          <span className="text-[10px] font-medium">Início</span>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Início</span>
         </a>
-        <a href="#new-entry" className="flex flex-col items-center gap-1">
-          <i className="fas fa-plus text-lg text-slate-400 hover:text-amber-600"></i>
-          <span className="text-[10px] font-medium">Registro</span>
+        <a href="#new-entry" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
+          <i className="fas fa-plus-circle text-lg"></i>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Registro</span>
         </a>
-        <a href="#reports" className="flex flex-col items-center gap-1 text-slate-400 hover:text-amber-600 transition-colors">
-          <i className="fas fa-file-alt text-lg"></i>
-          <span className="text-[10px] font-medium">Relatórios</span>
+        <a href="#reports" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
+          <i className="fas fa-file-medical-alt text-lg"></i>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Laudos</span>
         </a>
-        <a href="#booking" className="flex flex-col items-center gap-1 text-slate-400 hover:text-amber-600 transition-colors">
-          <i className="fas fa-calendar-check text-lg"></i>
-          <span className="text-[10px] font-medium">Agendar</span>
+        <a href="#logo-gen" className="flex flex-col items-center gap-1 text-white/70 hover:text-amber-400 transition-colors">
+          <i className="fas fa-paint-brush text-lg"></i>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Marca</span>
         </a>
       </nav>
     </div>

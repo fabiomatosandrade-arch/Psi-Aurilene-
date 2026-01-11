@@ -1,11 +1,13 @@
+
 import React, { useState, useEffect } from 'react';
-import { AuthState, User } from './types.ts';
-import Login from './pages/Login.tsx';
-import Register from './pages/Register.tsx';
-import Dashboard from './pages/Dashboard.tsx';
-import NewEntry from './pages/NewEntry.tsx';
-import Reports from './pages/Reports.tsx';
-import Booking from './pages/Booking.tsx';
+import { AuthState, User } from './types';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import NewEntry from './pages/NewEntry';
+import Reports from './pages/Reports';
+import Booking from './pages/Booking';
+import LogoGen from './pages/LogoGen';
 
 const App: React.FC = () => {
   const [auth, setAuth] = useState<AuthState>({
@@ -20,7 +22,11 @@ const App: React.FC = () => {
 
     const storedUser = localStorage.getItem('psicolog_session');
     if (storedUser) {
-      setAuth({ user: JSON.parse(storedUser), isAuthenticated: true });
+      try {
+        setAuth({ user: JSON.parse(storedUser), isAuthenticated: true });
+      } catch (e) {
+        localStorage.removeItem('psicolog_session');
+      }
     }
 
     return () => window.removeEventListener('hashchange', handleHashChange);
@@ -52,13 +58,15 @@ const App: React.FC = () => {
       case '#register':
         return <Register onRegisterSuccess={() => window.location.hash = '#login'} />;
       case '#dashboard':
-        return <Dashboard user={auth.user!} onLogout={handleLogout} />;
+        return auth.user ? <Dashboard user={auth.user} onLogout={handleLogout} /> : <Login onLogin={handleLogin} />;
       case '#new-entry':
-        return <NewEntry user={auth.user!} />;
+        return auth.user ? <NewEntry user={auth.user} /> : <Login onLogin={handleLogin} />;
       case '#reports':
-        return <Reports user={auth.user!} />;
+        return auth.user ? <Reports user={auth.user} /> : <Login onLogin={handleLogin} />;
       case '#booking':
-        return <Booking user={auth.user!} />;
+        return auth.user ? <Booking user={auth.user} /> : <Login onLogin={handleLogin} />;
+      case '#logo-gen':
+        return auth.user ? <LogoGen /> : <Login onLogin={handleLogin} />;
       case '#login':
       default:
         return <Login onLogin={handleLogin} />;

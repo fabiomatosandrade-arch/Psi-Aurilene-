@@ -1,7 +1,8 @@
 
 import { jsPDF } from 'jspdf';
 import { DailyEntry, User, Mood } from '../types';
-import { LOGO_AS_GOLD } from '../constants';
+// Fixed: Importing getAppLogo instead of non-existent LOGO_AS_GOLD
+import { getAppLogo } from '../constants';
 
 const moodToLabel = (mood: Mood) => {
   switch (mood) {
@@ -20,8 +21,8 @@ export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
 
   // Logo e Título
   try {
-    // Nota: Em produção, o logo deve ser uma imagem válida carregada
-    doc.addImage(LOGO_AS_GOLD, 'PNG', 85, 10, 40, 40); 
+    // Fixed: Using getAppLogo() which correctly retrieves the current branding (custom or default)
+    doc.addImage(getAppLogo(), 'PNG', 85, 10, 40, 40); 
   } catch(e) {
     // Fallback se a imagem falhar
     doc.setFontSize(30);

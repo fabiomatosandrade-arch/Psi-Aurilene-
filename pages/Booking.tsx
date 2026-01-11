@@ -8,7 +8,8 @@ interface BookingProps {
 }
 
 const Booking: React.FC<BookingProps> = ({ user }) => {
-  const WHATSAPP_NUMBER = "5511999999999"; // Substitua pelo seu número
+  // Novo número atualizado conforme solicitado
+  const WHATSAPP_NUMBER = "5575988130439"; 
   const EMAIL_ADDRESS = "clinicaasantiago@gmail.com";
 
   const handleWhatsApp = () => {
@@ -19,30 +20,46 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
   return (
     <Layout title="Agendar" onBack={() => window.location.hash = '#dashboard'}>
       <div className="space-y-6 text-center py-4">
-        <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto border border-amber-100">
-          <i className="fas fa-calendar-check text-3xl gold-text"></i>
+        <div className="w-24 h-24 brand-gradient rounded-full flex items-center justify-center mx-auto border-4 border-amber-200 shadow-xl p-4">
+          <img src="https://i.postimg.cc/k47M9f28/logo-as.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Agende sua Sessão</h2>
-          <p className="text-sm text-slate-500 px-4">Escolha como prefere entrar em contato para marcar seu próximo horário.</p>
+          <h2 className="text-xl font-black text-blue-900 uppercase tracking-tight">Agende sua Sessão</h2>
+          <p className="text-sm text-slate-500 px-4 mt-2">Escolha o canal de sua preferência para marcar seu próximo horário com a Dra. Aurilene.</p>
         </div>
 
-        <div className="space-y-3 px-2">
-          <button onClick={handleWhatsApp} className="w-full flex items-center gap-4 bg-green-50 p-5 rounded-3xl border border-green-100 active:scale-95 transition-transform">
-            <i className="fab fa-whatsapp text-3xl text-green-500"></i>
-            <div className="text-left">
-              <p className="font-bold text-green-700 text-sm">WhatsApp</p>
-              <p className="text-[10px] text-green-600">Agendamento rápido</p>
+        <div className="space-y-4 px-2">
+          <button 
+            onClick={handleWhatsApp} 
+            className="w-full flex items-center gap-5 bg-white p-6 rounded-[2rem] border-2 border-green-50 shadow-sm hover:shadow-md hover:border-green-200 active:scale-95 transition-all group"
+          >
+            <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors">
+              <i className="fab fa-whatsapp text-3xl text-green-500 group-hover:text-white"></i>
             </div>
+            <div className="text-left">
+              <p className="font-black text-slate-800 text-sm uppercase tracking-wide">WhatsApp</p>
+              <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">Agendamento Imediato</p>
+            </div>
+            <i className="fas fa-external-link-alt ml-auto text-slate-300"></i>
           </button>
 
-          <button onClick={() => window.location.href=`mailto:${EMAIL_ADDRESS}`} className="w-full flex items-center gap-4 bg-blue-50 p-5 rounded-3xl border border-blue-100 active:scale-95 transition-transform">
-            <i className="fas fa-envelope text-3xl text-blue-500"></i>
-            <div className="text-left">
-              <p className="font-bold text-blue-700 text-sm">E-mail</p>
-              <p className="text-[10px] text-blue-600">{EMAIL_ADDRESS}</p>
+          <button 
+            onClick={() => window.location.href=`mailto:${EMAIL_ADDRESS}`} 
+            className="w-full flex items-center gap-5 bg-white p-6 rounded-[2rem] border-2 border-blue-50 shadow-sm hover:shadow-md hover:border-blue-200 active:scale-95 transition-all group"
+          >
+            <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:brand-gradient group-hover:text-white transition-colors">
+              <i className="fas fa-envelope text-3xl text-blue-500 group-hover:text-white"></i>
             </div>
+            <div className="text-left">
+              <p className="font-black text-slate-800 text-sm uppercase tracking-wide">E-mail Profissional</p>
+              <p className="text-[10px] text-blue-600 font-bold uppercase tracking-widest">{EMAIL_ADDRESS}</p>
+            </div>
+            <i className="fas fa-external-link-alt ml-auto text-slate-300"></i>
           </button>
+        </div>
+
+        <div className="pt-10">
+          <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">Psi. Aurilene Santiago</p>
         </div>
       </div>
     </Layout>
