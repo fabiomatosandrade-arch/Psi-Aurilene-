@@ -68,7 +68,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
         <div className="brand-gradient rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 gold-gradient opacity-10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
           <h2 className="text-3xl font-black mb-1">Olá, {user.fullName.split(' ')[0]}!</h2>
-          <p className="text-blue-100 text-sm opacity-90 font-medium">Bem-vindo à sua jornada de bem-estar.</p>
+          <p className="text-blue-100 text-sm opacity-90 font-medium">Bem-vinda à sua jornada de bem-estar.</p>
           <div className="mt-6 flex flex-col gap-3">
             <a href="#new-entry" className="gold-gradient text-blue-900 px-6 py-4 rounded-2xl text-xs font-black shadow-lg uppercase tracking-widest active:scale-95 transition-transform text-center w-full">
               Fazer Registro Diário
@@ -83,7 +83,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             </div>
             <div>
               <p className="text-[10px] font-black text-blue-900 uppercase tracking-widest">Sua Terapia</p>
-              <p className="text-xs text-slate-500">Agende sua próxima sessão</p>
+              <p className="text-xs text-slate-500">Inicie ou continue a sua terapia</p>
             </div>
           </div>
           <a href="#booking" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-blue-900 hover:bg-amber-50 hover:text-amber-600 transition-colors">
