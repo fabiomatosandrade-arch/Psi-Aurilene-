@@ -30,27 +30,29 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
       <main className="flex-1 overflow-y-auto p-6 pb-40">
         {children}
         
-        {/* Footer com Destaque solicitado */}
-        <div className="mt-20 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 text-center relative overflow-hidden">
+        {/* Footer com Destaque Máximo solicitado */}
+        <div className="mt-20 p-8 bg-blue-50/30 rounded-[2.5rem] border border-blue-100/50 text-center relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-24 h-24 gold-gradient opacity-10 rounded-full blur-2xl"></div>
           
-          <h4 className="text-lg font-black text-blue-900 uppercase tracking-tight mb-1">
+          <h4 className="text-xl font-black text-blue-900 uppercase tracking-tight mb-2">
             Psi. Aurilene Santiago
           </h4>
-          <div className="h-0.5 w-12 gold-gradient mx-auto mb-4 rounded-full"></div>
+          <div className="h-1 w-12 gold-gradient mx-auto mb-6 rounded-full"></div>
           
-          <a 
-            href="https://www.psicologiaasantiago.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-block px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-[11px] font-bold text-amber-600 uppercase tracking-[0.15em] shadow-sm hover:shadow-md hover:border-amber-300 transition-all"
-          >
-            psicologiaasantiago.com
-          </a>
-          
-          <p className="mt-6 text-[8px] text-slate-400 font-medium uppercase tracking-[0.2em] opacity-60">
-            Acompanhamento Terapêutico Profissional
-          </p>
+          <div className="space-y-4">
+            <a 
+              href="https://www.psicologiaasantiago.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-3 bg-white border-2 border-amber-200 rounded-2xl text-[12px] font-black text-blue-900 uppercase tracking-widest shadow-lg shadow-amber-100 hover:shadow-amber-200 hover:border-amber-400 transition-all active:scale-95"
+            >
+              psicologiaasantiago.com
+            </a>
+            
+            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.25em] opacity-80 pt-4">
+              Acompanhamento Terapêutico
+            </p>
+          </div>
         </div>
       </main>
 

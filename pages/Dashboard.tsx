@@ -76,11 +76,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           </div>
         </div>
 
-        {/* Seção Terapia Atualizada */}
+        {/* Seção Terapia Atualizada conforme solicitação */}
         <div className="bg-white border-2 border-slate-100 p-6 rounded-[2rem] flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 brand-gradient rounded-2xl flex items-center justify-center text-amber-400 shadow-inner">
-              <i className="fas fa-calendar-check"></i>
+              <i className="fas fa-calendar-check text-xl"></i>
             </div>
             <div>
               <p className="text-sm font-bold text-blue-900 leading-tight">
