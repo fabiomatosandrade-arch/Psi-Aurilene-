@@ -11,7 +11,6 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     username: '',
     fullName: '',
     email: '',
-    cpf: '',
     birthDate: '',
     password: '',
     confirmPassword: ''
@@ -20,20 +19,11 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
 
-  const formatCPF = (value: string) => {
-    return value
-      .replace(/\D/g, '')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-      .replace(/(-\d{2})\d+?$/, '$1');
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'cpf' ? formatCPF(value) : value
+      [name]: value
     }));
   };
 
@@ -41,10 +31,9 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     e.preventDefault();
     setError('');
 
-    const { username, fullName, email, cpf, birthDate, password, confirmPassword } = formData;
+    const { username, fullName, email, birthDate, password, confirmPassword } = formData;
 
-    // Validação de e-mail e campos obrigatórios
-    if (!username || !fullName || !email || !cpf || !birthDate || !password || !confirmPassword) {
+    if (!username || !fullName || !email || !birthDate || !password || !confirmPassword) {
       setError('Todos os campos marcados com * são obrigatórios.');
       return;
     }
@@ -56,12 +45,6 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
 
     const users: User[] = JSON.parse(localStorage.getItem('psicolog_users') || '[]');
     
-    // Bloqueio de duplicidade de CPF
-    if (users.some(u => u.cpf === cpf)) {
-      setError('Este CPF já possui um cadastro ativo.');
-      return;
-    }
-
     if (users.some(u => u.username === username)) {
       setError('Este nome de usuário já está em uso.');
       return;
@@ -77,7 +60,6 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
       username,
       fullName,
       email,
-      cpf,
       birthDate,
       password
     };
@@ -123,7 +105,6 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
               className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
               placeholder="seu@email.com"
             />
-            <p className="text-[8px] text-slate-400 mt-1 ml-1 italic">Este e-mail será usado caso você esqueça sua senha.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -140,29 +121,16 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
               />
             </div>
             <div>
-              <label className="block text-[9px] font-bold text-slate-400 uppercase mb-1 ml-1">CPF *</label>
+              <label className="block text-[9px] font-bold text-slate-400 uppercase mb-1 ml-1">Nascimento *</label>
               <input
-                type="text"
-                name="cpf"
+                type="date"
+                name="birthDate"
                 required
-                value={formData.cpf}
+                value={formData.birthDate}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
-                placeholder="000.000.000-00"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-slate-400 uppercase mb-1 ml-1">Data de Nascimento *</label>
-            <input
-              type="date"
-              name="birthDate"
-              required
-              value={formData.birthDate}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-800 outline-none text-sm transition-all"
-            />
           </div>
 
           <div className="grid grid-cols-2 gap-3">

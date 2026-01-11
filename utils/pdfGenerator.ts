@@ -1,3 +1,4 @@
+
 import { jsPDF } from 'jspdf';
 import { DailyEntry, User, Mood } from '../types';
 
@@ -31,14 +32,13 @@ export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
   doc.setTextColor(100, 100, 100);
   doc.setFont('helvetica', 'normal');
   doc.text(`Paciente: ${user.fullName}`, 20, 60);
-  doc.text(`CPF: ${user.cpf}`, 20, 66);
-  doc.text(`Período: ${new Date(sortedEntries[sortedEntries.length-1].date).toLocaleDateString()} a ${new Date(sortedEntries[0].date).toLocaleDateString()}`, 20, 72);
+  doc.text(`Período: ${new Date(sortedEntries[sortedEntries.length-1].date).toLocaleDateString()} a ${new Date(sortedEntries[0].date).toLocaleDateString()}`, 20, 66);
 
   doc.setDrawColor(212, 175, 55);
-  doc.line(20, 78, 190, 78);
+  doc.line(20, 72, 190, 72);
 
   // Registros
-  let y = 90;
+  let y = 84;
   sortedEntries.forEach((entry) => {
     if (y > 250) {
       doc.addPage();
