@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { User, DailyEntry, Mood } from '../types';
@@ -20,11 +19,15 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [validationMsg, setValidationMsg] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadEntries = () => {
     const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
     const userEntries = allEntries.filter(e => e.userId === user.id)
       .sort((a, b) => b.timestamp - a.timestamp);
     setAllUserEntries(userEntries);
+  };
+
+  useEffect(() => {
+    loadEntries();
   }, [user.id]);
 
   useEffect(() => {
@@ -54,6 +57,15 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
     setFilteredEntries(filtered);
     setVisibleCount(ITEMS_PER_PAGE);
   }, [allUserEntries, filter]);
+
+  const handleDeleteEntry = (id: string) => {
+    if (window.confirm('Tem certeza que deseja apagar este registro?')) {
+      const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
+      const updatedEntries = allEntries.filter(e => e.id !== id);
+      localStorage.setItem('psicolog_entries', JSON.stringify(updatedEntries));
+      loadEntries();
+    }
+  };
 
   const getMoodDetails = (mood: Mood) => {
     switch (mood) {
@@ -120,18 +132,27 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
           {filteredEntries.slice(0, visibleCount).map((entry) => {
             const mood = getMoodDetails(entry.mood);
             return (
-              <div key={entry.id} className="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-amber-100 transition-colors">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-black text-slate-800">
-                    {new Date(entry.date).toLocaleDateString('pt-BR')}
-                  </span>
-                  <span className="text-slate-300">•</span>
-                  <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full">
-                    <span className="text-lg">{mood.emoji}</span>
-                    <span className={`text-[9px] font-black uppercase tracking-wider ${mood.color}`}>
-                      {mood.label}
+              <div key={entry.id} className="relative bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-amber-100 transition-colors group">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black text-slate-800">
+                      {new Date(entry.date).toLocaleDateString('pt-BR')}
                     </span>
+                    <span className="text-slate-300">•</span>
+                    <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full">
+                      <span className="text-lg">{mood.emoji}</span>
+                      <span className={`text-[9px] font-black uppercase tracking-wider ${mood.color}`}>
+                        {mood.label}
+                      </span>
+                    </div>
                   </div>
+                  <button 
+                    onClick={() => handleDeleteEntry(entry.id)}
+                    className="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                    title="Apagar registro"
+                  >
+                    <i className="fas fa-trash-alt text-[10px]"></i>
+                  </button>
                 </div>
                 <p className="text-slate-600 text-xs italic leading-relaxed">
                   "{entry.notes}"

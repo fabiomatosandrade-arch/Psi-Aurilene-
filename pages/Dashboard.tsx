@@ -10,12 +10,25 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
   const [entries, setEntries] = useState<DailyEntry[]>([]);
 
-  useEffect(() => {
+  const loadEntries = () => {
     const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
     const userEntries = allEntries.filter(e => e.userId === user.id)
       .sort((a, b) => b.timestamp - a.timestamp);
     setEntries(userEntries);
+  };
+
+  useEffect(() => {
+    loadEntries();
   }, [user.id]);
+
+  const handleDeleteEntry = (id: string) => {
+    if (window.confirm('Tem certeza que deseja apagar este registro? Esta ação não pode ser desfeita.')) {
+      const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
+      const updatedEntries = allEntries.filter(e => e.id !== id);
+      localStorage.setItem('psicolog_entries', JSON.stringify(updatedEntries));
+      loadEntries();
+    }
+  };
 
   const getMoodEmoji = (mood: Mood) => {
     switch (mood) {
@@ -89,12 +102,21 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
               </div>
             ) : (
               entries.slice(0, 3).map((entry) => (
-                <div key={entry.id} className="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-amber-200 transition-all group">
+                <div key={entry.id} className="relative bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-amber-200 transition-all group">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-[10px] font-black text-blue-900 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-wider">
                       {new Date(entry.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
                     </span>
-                    <span className="text-2xl group-hover:scale-125 transition-transform duration-500">{getMoodEmoji(entry.mood)}</span>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        onClick={() => handleDeleteEntry(entry.id)}
+                        className="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                        title="Apagar registro"
+                      >
+                        <i className="fas fa-trash-alt text-[10px]"></i>
+                      </button>
+                      <span className="text-2xl group-hover:scale-125 transition-transform duration-500">{getMoodEmoji(entry.mood)}</span>
+                    </div>
                   </div>
                   <p className="text-slate-600 text-sm leading-relaxed line-clamp-2 italic">
                     "{entry.notes}"
