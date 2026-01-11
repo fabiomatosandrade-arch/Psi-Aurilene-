@@ -8,84 +8,41 @@ interface BookingProps {
 }
 
 const Booking: React.FC<BookingProps> = ({ user }) => {
-  const WHATSAPP_LINK = "https://wa.link/wjcw4x";
+  const WHATSAPP_NUMBER = "5511999999999"; // Substitua pelo seu número
   const EMAIL_ADDRESS = "clinicaasantiago@gmail.com";
 
-  const handleEmailClick = () => {
-    const subject = encodeURIComponent(`Agendamento de Consulta - ${user.fullName}`);
-    const body = encodeURIComponent(`Olá, gostaria de solicitar o agendamento de uma consulta.\n\nNome: ${user.fullName}\nCPF: ${user.cpf}`);
-    window.location.href = `mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${body}`;
+  const handleWhatsApp = () => {
+    const text = encodeURIComponent(`Olá Dra. Aurilene, sou ${user.fullName} e gostaria de agendar uma consulta.`);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank');
   };
 
   return (
-    <Layout title="Agendamento" onBack={() => window.location.hash = '#dashboard'}>
-      <div className="space-y-8 py-4">
-        <div className="text-center space-y-2 px-4">
-          <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-100">
-            <i className="fas fa-calendar-check text-3xl gold-text"></i>
-          </div>
-          <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Agende sua Consulta</h2>
-          <p className="text-slate-500 text-sm leading-relaxed">
-            Escolha o canal de sua preferência para solicitar um novo horário para sua sessão de terapia.
-          </p>
+    <Layout title="Agendar" onBack={() => window.location.hash = '#dashboard'}>
+      <div className="space-y-6 text-center py-4">
+        <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto border border-amber-100">
+          <i className="fas fa-calendar-check text-3xl gold-text"></i>
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-slate-800">Agende sua Sessão</h2>
+          <p className="text-sm text-slate-500 px-4">Escolha como prefere entrar em contato para marcar seu próximo horário.</p>
         </div>
 
-        <div className="space-y-4">
-          {/* WhatsApp Card */}
-          <a 
-            href={WHATSAPP_LINK} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="group block bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
-          >
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                <i className="fab fa-whatsapp text-3xl"></i>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-slate-800 uppercase text-xs tracking-widest">WhatsApp</h3>
-                <p className="text-[10px] text-slate-400 mt-1">Resposta rápida via chat</p>
-              </div>
-              <i className="fas fa-external-link-alt text-slate-300 text-xs"></i>
-            </div>
-          </a>
-
-          {/* Email Card */}
-          <button 
-            onClick={handleEmailClick}
-            className="w-full group block bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-left active:scale-[0.98]"
-          >
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                <i className="fas fa-envelope text-3xl"></i>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-slate-800 uppercase text-xs tracking-widest">E-mail Profissional</h3>
-                <p className="text-[10px] text-slate-400 mt-1">clinicaasantiago@gmail.com</p>
-              </div>
-              <i className="fas fa-paper-plane text-slate-300 text-xs"></i>
+        <div className="space-y-3 px-2">
+          <button onClick={handleWhatsApp} className="w-full flex items-center gap-4 bg-green-50 p-5 rounded-3xl border border-green-100 active:scale-95 transition-transform">
+            <i className="fab fa-whatsapp text-3xl text-green-500"></i>
+            <div className="text-left">
+              <p className="font-bold text-green-700 text-sm">WhatsApp</p>
+              <p className="text-[10px] text-green-600">Agendamento rápido</p>
             </div>
           </button>
-        </div>
 
-        <div className="bg-slate-50 p-6 rounded-3xl border border-dashed border-slate-200">
-          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-            <i className="fas fa-info-circle"></i> Informações Úteis
-          </h4>
-          <ul className="space-y-2">
-            <li className="text-[11px] text-slate-500 flex gap-2">
-              <span className="text-amber-500">•</span>
-              Cancelamentos devem ser feitos com 24h de antecedência.
-            </li>
-            <li className="text-[11px] text-slate-500 flex gap-2">
-              <span className="text-amber-500">•</span>
-              Verifique a disponibilidade de horários noturnos.
-            </li>
-            <li className="text-[11px] text-slate-500 flex gap-2">
-              <span className="text-amber-500">•</span>
-              Sessões online disponíveis sob consulta.
-            </li>
-          </ul>
+          <button onClick={() => window.location.href=`mailto:${EMAIL_ADDRESS}`} className="w-full flex items-center gap-4 bg-blue-50 p-5 rounded-3xl border border-blue-100 active:scale-95 transition-transform">
+            <i className="fas fa-envelope text-3xl text-blue-500"></i>
+            <div className="text-left">
+              <p className="font-bold text-blue-700 text-sm">E-mail</p>
+              <p className="text-[10px] text-blue-600">{EMAIL_ADDRESS}</p>
+            </div>
+          </button>
         </div>
       </div>
     </Layout>
