@@ -22,7 +22,7 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
           <h2 className="text-2xl font-black text-blue-900 uppercase tracking-tight">Agende sua Sessão</h2>
           <div className="h-1 w-12 gold-gradient mx-auto mt-2 mb-4"></div>
           <p className="text-sm text-slate-500 px-4 leading-relaxed">
-            Utilize o canal oficial abaixo para marcar seu próximo horário com a Dra. Aurilene Santiago.
+            Utilize o canal oficial abaixo para marcar seu próximo horário diretamente com a Dra. Aurilene Santiago.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
                 WhatsApp 
               </p>
               <p className="text-[10px] text-green-600 font-black uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">
-                Agendamento Imediato
+                Agendamento Direto
               </p>
             </div>
             
@@ -50,16 +50,7 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
           </button>
         </div>
 
-        <div className="pt-12 px-6">
-          <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100">
-            <i className="fas fa-calendar-alt text-blue-900/20 text-2xl mb-3"></i>
-            <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-widest font-bold">
-              Pronto para o próximo passo? O agendamento de sua sessão é realizado diretamente com a Dra. Aurilene Santiago para garantir um atendimento personalizado.
-            </p>
-          </div>
-        </div>
-
-        <div className="pt-10">
+        <div className="pt-20">
           <p className="text-[10px] font-black text-slate-200 uppercase tracking-[0.4em]">Atendimento Profissional Especializado</p>
         </div>
       </div>
