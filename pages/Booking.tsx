@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '../components/Layout';
 import { User } from '../types';
@@ -8,7 +7,6 @@ interface BookingProps {
 }
 
 const Booking: React.FC<BookingProps> = ({ user }) => {
-  // Novo número atualizado conforme solicitado
   const WHATSAPP_NUMBER = "5575988130439"; 
   const EMAIL_ADDRESS = "clinicaasantiago@gmail.com";
 
@@ -20,7 +18,7 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
   return (
     <Layout title="Agendar" onBack={() => window.location.hash = '#dashboard'}>
       <div className="space-y-6 text-center py-4">
-        <div className="w-24 h-24 brand-gradient rounded-full flex items-center justify-center mx-auto border-4 border-amber-200 shadow-xl p-4">
+        <div className="w-24 h-24 brand-gradient rounded-full flex items-center justify-center mx-auto border-4 border-amber-200 shadow-xl p-4 overflow-hidden">
           <img src="https://i.postimg.cc/k47M9f28/logo-as.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
         <div>
@@ -37,7 +35,10 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
               <i className="fab fa-whatsapp text-3xl text-green-500 group-hover:text-white"></i>
             </div>
             <div className="text-left">
-              <p className="font-black text-slate-800 text-sm uppercase tracking-wide">WhatsApp</p>
+              <p className="font-black text-slate-800 text-sm uppercase tracking-wide flex items-center gap-2">
+                WhatsApp 
+                <i className="fab fa-whatsapp text-green-500 text-base"></i>
+              </p>
               <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">Agendamento Imediato</p>
             </div>
             <i className="fas fa-external-link-alt ml-auto text-slate-300"></i>
