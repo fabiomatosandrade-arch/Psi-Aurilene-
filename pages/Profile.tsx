@@ -1,7 +1,7 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/Layout';
-import { User, DailyEntry } from '../types';
+import { User } from '../types';
 
 interface ProfileProps {
   user: User;
@@ -17,10 +17,8 @@ const Profile: React.FC<ProfileProps> = ({ user, onUpdate }) => {
     confirmPassword: user.password || ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,56 +26,6 @@ const Profile: React.FC<ProfileProps> = ({ user, onUpdate }) => {
       ...prev,
       [name]: value
     }));
-  };
-
-  const handleExportData = () => {
-    const allUsers: User[] = JSON.parse(localStorage.getItem('psicolog_users') || '[]');
-    const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
-    
-    const userEntries = allEntries.filter(e => e.userId === user.id);
-    const backupData = {
-      user: user,
-      entries: userEntries,
-      exportedAt: new Date().toISOString()
-    };
-
-    const blob = new Blob([JSON.stringify(backupData)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Backup_PsiAurilene_${user.username}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setSuccess('Backup gerado! Envie este arquivo para seu outro dispositivo.');
-  };
-
-  const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const data = JSON.parse(event.target?.result as string);
-        if (!data.user || !data.entries) throw new Error('Arquivo inválido');
-
-        const users: User[] = JSON.parse(localStorage.getItem('psicolog_users') || '[]');
-        if (!users.some(u => u.id === data.user.id)) {
-          users.push(data.user);
-          localStorage.setItem('psicolog_users', JSON.stringify(users));
-        }
-
-        const entries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
-        const newEntries = data.entries.filter((ne: DailyEntry) => !entries.some(e => e.id === ne.id));
-        localStorage.setItem('psicolog_entries', JSON.stringify([...entries, ...newEntries]));
-
-        setSuccess('Dados importados com sucesso neste dispositivo!');
-      } catch (err) {
-        setError('Erro ao importar arquivo. Verifique se o arquivo está correto.');
-      }
-    };
-    reader.readAsText(file);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -119,33 +67,6 @@ const Profile: React.FC<ProfileProps> = ({ user, onUpdate }) => {
           <div>
             <h2 className="text-xl font-black text-blue-900 uppercase tracking-tighter">Perfil</h2>
             <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Gerencie seus dados e acessos</p>
-          </div>
-        </div>
-
-        <div className="bg-slate-50 border-2 border-dashed border-slate-200 p-6 rounded-[2rem] space-y-4">
-          <div className="flex items-center gap-3 mb-2">
-            <i className="fas fa-sync-alt text-amber-600"></i>
-            <h3 className="text-[10px] font-black text-blue-900 uppercase tracking-widest">Sincronização</h3>
-          </div>
-          <p className="text-[10px] text-slate-500 leading-relaxed uppercase font-bold">
-            Seus dados são criptografados e salvos na nuvem. Você pode acessar de qualquer dispositivo usando seu usuário e senha.
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <button 
-              onClick={handleExportData}
-              className="flex flex-col items-center justify-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-amber-300 transition-colors group"
-            >
-              <i className="fas fa-file-export text-blue-900 mb-2 group-hover:scale-110 transition-transform"></i>
-              <span className="text-[8px] font-black uppercase text-slate-600">Exportar Backup</span>
-            </button>
-            <button 
-              onClick={() => fileInputRef.current?.click()}
-              className="flex flex-col items-center justify-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-amber-300 transition-colors group"
-            >
-              <i className="fas fa-file-import text-blue-900 mb-2 group-hover:scale-110 transition-transform"></i>
-              <span className="text-[8px] font-black uppercase text-slate-600">Importar Backup</span>
-            </button>
-            <input type="file" ref={fileInputRef} onChange={handleImportData} accept=".json" className="hidden" />
           </div>
         </div>
 

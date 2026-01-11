@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { User } from '../types';
-import { SyncService } from '../utils/syncService';
 
 interface LoginProps {
   onLogin: (user: User) => void;
@@ -11,10 +10,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isSearchingCloud, setIsSearchingCloud] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -24,20 +22,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     }
 
     const users: User[] = JSON.parse(localStorage.getItem('psicolog_users') || '[]');
-    // Busca local apenas por usuário e senha
-    let user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+    const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
     
-    if (!user) {
-      // Se não achar local, tenta buscar na nuvem para permitir troca de aparelho
-      setIsSearchingCloud(true);
-      const cloudUser = await SyncService.pullFromCloud(username, password);
-      setIsSearchingCloud(false);
-      
-      if (cloudUser) {
-        user = cloudUser;
-      }
-    }
-
     if (user) {
       onLogin(user);
     } else {
@@ -51,7 +37,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         <div className="flex flex-col items-center mb-8">
           <h1 className="text-4xl font-black text-slate-800 tracking-tighter">PSI.<span className="gold-text">AURILENE</span></h1>
           <div className="h-1.5 w-16 gold-gradient rounded-full mt-3"></div>
-          <p className="text-slate-400 text-[10px] mt-4 uppercase tracking-[0.5em] font-bold">Portal Multi-Dispositivo</p>
+          <p className="text-slate-400 text-[10px] mt-4 uppercase tracking-[0.5em] font-bold">Acompanhamento Terapêutico</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 text-left">
@@ -97,20 +83,12 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
           <button 
             type="submit" 
-            disabled={isSearchingCloud}
             className="w-full brand-gradient text-white font-bold py-5 rounded-2xl shadow-lg uppercase tracking-widest text-xs mt-4 active:scale-95 transition-transform flex items-center justify-center gap-3"
           >
-            {isSearchingCloud ? <i className="fas fa-cloud-download-alt animate-sync"></i> : <i className="fas fa-sign-in-alt"></i>}
-            {isSearchingCloud ? 'Conectando à Nuvem...' : 'Entrar no Portal'}
+            <i className="fas fa-sign-in-alt"></i>
+            Entrar no Portal
           </button>
         </form>
-
-        <div className="mt-8 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-          <p className="text-[9px] text-emerald-700 leading-relaxed font-bold uppercase tracking-[0.1em]">
-            <i className="fas fa-globe mr-2"></i>
-            Acesse de qualquer lugar apenas com seu login e senha.
-          </p>
-        </div>
 
         <p className="mt-8 text-sm text-slate-500">
           Novo por aqui? <a href="#register" className="font-bold text-blue-800 border-b-2 border-amber-400">Crie sua conta</a>

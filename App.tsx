@@ -11,14 +11,12 @@ import LogoGen from './pages/LogoGen';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
-import { SyncService } from './utils/syncService';
 
 const App: React.FC = () => {
   const [auth, setAuth] = useState<AuthState>({
     user: null,
     isAuthenticated: false,
   });
-  const [isSyncing, setIsSyncing] = useState(false);
   const [route, setRoute] = useState<string>(window.location.hash.split('?')[0] || '#login');
 
   useEffect(() => {
@@ -47,13 +45,9 @@ const App: React.FC = () => {
     }
   }, [auth.isAuthenticated, route]);
 
-  const handleLogin = async (user: User) => {
-    setIsSyncing(true);
-    // Tenta sincronizar os dados mais recentes da nuvem antes de entrar
-    await SyncService.pushToCloud(user); 
+  const handleLogin = (user: User) => {
     setAuth({ user, isAuthenticated: true });
     localStorage.setItem('psicolog_session', JSON.stringify(user));
-    setIsSyncing(false);
     window.location.hash = '#dashboard';
   };
 
@@ -63,10 +57,9 @@ const App: React.FC = () => {
     window.location.hash = '#login';
   };
 
-  const handleUpdateUser = async (updatedUser: User) => {
+  const handleUpdateUser = (updatedUser: User) => {
     setAuth({ user: updatedUser, isAuthenticated: true });
     localStorage.setItem('psicolog_session', JSON.stringify(updatedUser));
-    await SyncService.pushToCloud(updatedUser);
   };
 
   const renderRoute = () => {
@@ -97,15 +90,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {isSyncing && (
-        <div className="fixed inset-0 bg-blue-900/10 backdrop-blur-sm z-[9999] flex items-center justify-center">
-          <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl text-center space-y-4 max-w-xs">
-            <i className="fas fa-cloud-download-alt text-4xl text-blue-900 animate-sync"></i>
-            <p className="text-xs font-black text-blue-900 uppercase tracking-widest">Sincronizando com a Nuvem...</p>
-            <p className="text-[9px] text-slate-400 font-bold uppercase">Garantindo que seus dados estejam atualizados em todos os seus aparelhos.</p>
-          </div>
-        </div>
-      )}
       {renderRoute()}
     </div>
   );

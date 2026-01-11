@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { User, Mood, DailyEntry } from '../types';
-import { SyncService } from '../utils/syncService';
 
 interface NewEntryProps {
   user: User;
@@ -22,7 +21,7 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
     { value: Mood.EXCELLENT, emoji: '😄', label: 'Muito Bem', color: 'bg-emerald-50', activeColor: 'ring-emerald-500 text-emerald-600' },
   ];
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!mood) {
       alert('Por favor, selecione como está seu humor hoje.');
@@ -44,11 +43,9 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
     allEntries.push(newEntry);
     localStorage.setItem('psicolog_entries', JSON.stringify(allEntries));
 
-    // Sincronização automática com a nuvem após salvar
-    await SyncService.pushToCloud(user);
-
     setTimeout(() => {
-      alert('Registro salvo e sincronizado na nuvem!');
+      setIsSubmitting(false);
+      alert('Registro salvo com sucesso!');
       window.location.hash = '#dashboard';
     }, 500);
   };
@@ -105,8 +102,8 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
           disabled={isSubmitting}
           className="w-full gold-gradient text-white font-black py-4 rounded-2xl shadow-lg hover:shadow-amber-200/50 active:scale-[0.98] disabled:opacity-50 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
         >
-          {isSubmitting ? <i className="fas fa-sync-alt fa-spin"></i> : <i className="fas fa-cloud-upload-alt"></i>}
-          {isSubmitting ? 'Sincronizando...' : 'Salvar e Sincronizar'}
+          {isSubmitting ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-save"></i>}
+          {isSubmitting ? 'Salvando...' : 'Salvar Registro'}
         </button>
       </form>
     </Layout>

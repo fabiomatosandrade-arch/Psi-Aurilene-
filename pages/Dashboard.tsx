@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { User, DailyEntry, Mood } from '../types';
-import { SyncService } from '../utils/syncService';
 
 interface DashboardProps {
   user: User;
@@ -11,32 +10,24 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
   const [entries, setEntries] = useState<DailyEntry[]>([]);
-  const [isSyncing, setIsSyncing] = useState(false);
 
-  const loadEntries = async () => {
+  const loadEntries = () => {
     const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
     const userEntries = allEntries.filter(e => e.userId === user.id)
       .sort((a, b) => b.timestamp - a.timestamp);
     setEntries(userEntries);
   };
 
-  const handleManualSync = async () => {
-    setIsSyncing(true);
-    await SyncService.pushToCloud(user);
-    setTimeout(() => setIsSyncing(false), 1000);
-  };
-
   useEffect(() => {
     loadEntries();
   }, [user.id]);
 
-  const handleDeleteEntry = async (id: string) => {
+  const handleDeleteEntry = (id: string) => {
     if (window.confirm('Tem certeza que deseja apagar este registro?')) {
       const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
       const updatedEntries = allEntries.filter(e => e.id !== id);
       localStorage.setItem('psicolog_entries', JSON.stringify(updatedEntries));
-      await loadEntries();
-      await SyncService.pushToCloud(user);
+      loadEntries();
     }
   };
 
@@ -57,13 +48,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       actions={
         <div className="flex gap-2">
           <button 
-            onClick={handleManualSync}
-            className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${isSyncing ? 'bg-amber-100 text-amber-600' : 'bg-slate-50 text-blue-900'}`}
-            title="Sincronizar com a Nuvem"
-          >
-            <i className={`fas fa-sync-alt ${isSyncing ? 'animate-sync' : ''}`}></i>
-          </button>
-          <button 
             onClick={() => window.location.hash = '#profile'} 
             className="w-10 h-10 flex items-center justify-center text-blue-900 bg-slate-50 hover:bg-blue-100 rounded-full transition-all"
             title="Meus Dados"
@@ -83,14 +67,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       <div className="space-y-6">
         <div className="brand-gradient rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 gold-gradient opacity-10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-          <div className="flex justify-between items-start mb-1">
-             <h2 className="text-3xl font-black">Olá, {user.fullName.split(' ')[0]}!</h2>
-             <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/20">
-                <div className={`w-2 h-2 rounded-full ${isSyncing ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`}></div>
-                <span className="text-[8px] font-black uppercase tracking-widest">{isSyncing ? 'Sincronizando' : 'Nuvem OK'}</span>
-             </div>
-          </div>
-          <p className="text-blue-100 text-sm opacity-90 font-medium">Sua jornada sincronizada em tempo real.</p>
+          <h2 className="text-3xl font-black mb-1">Olá, {user.fullName.split(' ')[0]}!</h2>
+          <p className="text-blue-100 text-sm opacity-90 font-medium">Bem-vindo à sua jornada de bem-estar.</p>
           <div className="mt-6 flex flex-col gap-3">
             <a href="#new-entry" className="gold-gradient text-blue-900 px-6 py-4 rounded-2xl text-xs font-black shadow-lg uppercase tracking-widest active:scale-95 transition-transform text-center w-full">
               Fazer Registro Diário
@@ -133,8 +111,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           <div className="space-y-4">
             {entries.length === 0 ? (
               <div className="text-center py-16 bg-white rounded-[2rem] border-2 border-dashed border-slate-100">
-                <i className="fas fa-cloud-upload-alt text-5xl text-slate-100 mb-4"></i>
-                <p className="text-slate-400 text-sm font-medium">Seus dados aparecerão aqui em todos os seus aparelhos.</p>
+                <i className="fas fa-clipboard-list text-5xl text-slate-100 mb-4"></i>
+                <p className="text-slate-400 text-sm font-medium">Comece sua jornada fazendo seu primeiro registro.</p>
               </div>
             ) : (
               entries.slice(0, 3).map((entry) => (
