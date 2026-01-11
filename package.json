@@ -1,5 +1,5 @@
 {
-  "name": "copy-of-psi.aurilene---acompanhamento-terapêutico",
+  "name": "psi.aurilene---acompanhamento-terapêutico",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,10 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "jspdf": "2.5.1",
-    "@google/genai": "1.35.0"
+    "react": "^19.2.3",
+    "jspdf": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
