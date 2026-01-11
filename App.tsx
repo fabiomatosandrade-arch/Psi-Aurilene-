@@ -10,6 +10,7 @@ import Booking from './pages/Booking';
 import LogoGen from './pages/LogoGen';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Profile from './pages/Profile';
 
 const App: React.FC = () => {
   const [auth, setAuth] = useState<AuthState>({
@@ -56,6 +57,11 @@ const App: React.FC = () => {
     window.location.hash = '#login';
   };
 
+  const handleUpdateUser = (updatedUser: User) => {
+    setAuth({ user: updatedUser, isAuthenticated: true });
+    localStorage.setItem('psicolog_session', JSON.stringify(updatedUser));
+  };
+
   const renderRoute = () => {
     switch (route) {
       case '#register':
@@ -66,6 +72,8 @@ const App: React.FC = () => {
         return <ResetPassword />;
       case '#dashboard':
         return auth.user ? <Dashboard user={auth.user} onLogout={handleLogout} /> : <Login onLogin={handleLogin} />;
+      case '#profile':
+        return auth.user ? <Profile user={auth.user} onUpdate={handleUpdateUser} /> : <Login onLogin={handleLogin} />;
       case '#new-entry':
         return auth.user ? <NewEntry user={auth.user} /> : <Login onLogin={handleLogin} />;
       case '#reports':

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { User, DailyEntry, Mood } from '../types';
@@ -45,9 +46,22 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
     <Layout 
       title="Portal do Paciente" 
       actions={
-        <button onClick={onLogout} className="w-10 h-10 flex items-center justify-center text-blue-900 bg-slate-50 hover:bg-red-50 hover:text-red-500 rounded-full transition-all">
-          <i className="fas fa-sign-out-alt"></i>
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={() => window.location.hash = '#profile'} 
+            className="w-10 h-10 flex items-center justify-center text-blue-900 bg-slate-50 hover:bg-blue-100 rounded-full transition-all"
+            title="Meus Dados"
+          >
+            <i className="fas fa-user-cog"></i>
+          </button>
+          <button 
+            onClick={onLogout} 
+            className="w-10 h-10 flex items-center justify-center text-blue-900 bg-slate-50 hover:bg-red-50 hover:text-red-500 rounded-full transition-all"
+            title="Sair"
+          >
+            <i className="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
       }
     >
       <div className="space-y-6">
