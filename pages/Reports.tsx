@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { User, DailyEntry, Mood } from '../types';
@@ -58,12 +59,14 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [allUserEntries, filter]);
 
-  const handleDeleteEntry = (id: string) => {
-    if (window.confirm('Tem certeza que deseja apagar este registro?')) {
-      const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
-      const updatedEntries = allEntries.filter(e => e.id !== id);
-      localStorage.setItem('psicolog_entries', JSON.stringify(updatedEntries));
-      loadEntries();
+  const getMoodLabel = (mood: Mood) => {
+    switch (mood) {
+      case Mood.VERY_BAD: return 'Muito Mal';
+      case Mood.BAD: return 'Mal';
+      case Mood.NEUTRAL: return 'Neutro';
+      case Mood.GOOD: return 'Bem';
+      case Mood.EXCELLENT: return 'Muito Bem';
+      default: return 'Indefinido';
     }
   };
 
@@ -93,10 +96,52 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
     }, 800);
   };
 
+  const generateShareText = () => {
+    const periodLabel = filter === 'all' ? 'Completo' : filter === 'week' ? 'Semana' : filter === 'month' ? 'Mês' : 'Ano';
+    const latest = filteredEntries[0];
+    let text = `*Relatório Terapêutico - Psi. Aurilene*\n`;
+    text += `Paciente: ${user.fullName}\n`;
+    text += `Período: ${periodLabel}\n`;
+    text += `Registros no período: ${filteredEntries.length}\n`;
+    
+    if (latest) {
+      text += `\n*Último Registro (${new Date(latest.date).toLocaleDateString('pt-BR')}):*\n`;
+      text += `Humor: ${getMoodLabel(latest.mood)}\n`;
+      text += `Nota: "${latest.notes.substring(0, 100)}${latest.notes.length > 100 ? '...' : ''}"`;
+    }
+    
+    return encodeURIComponent(text);
+  };
+
+  const handleSendWhatsApp = () => {
+    if (filteredEntries.length === 0) return;
+    const text = generateShareText();
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  };
+
+  const handleSendEmail = () => {
+    if (filteredEntries.length === 0) return;
+    const subject = encodeURIComponent(`Relatório Terapêutico - ${user.fullName}`);
+    const body = generateShareText();
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  };
+
   const hasMore = filteredEntries.length > visibleCount;
 
   return (
-    <Layout title="Relatórios" onBack={() => window.location.hash = '#dashboard'}>
+    <Layout 
+      title="Relatórios" 
+      onBack={() => window.location.hash = '#dashboard'}
+      actions={
+        <button 
+          onClick={() => window.location.hash = '#dashboard'}
+          className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-blue-900 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors flex items-center gap-2"
+        >
+          <i className="fas fa-home"></i>
+          Sair
+        </button>
+      }
+    >
       <div className="space-y-6 pb-20">
         <div className="flex bg-slate-100 p-1 rounded-2xl">
           {['all', 'week', 'month', 'year'].map((p) => (
@@ -118,14 +163,41 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
           </div>
         )}
 
-        <button
-          onClick={handleDownloadPDF}
-          disabled={isGenerating || filteredEntries.length === 0}
-          className="w-full gold-gradient text-white flex items-center justify-center gap-3 p-4 rounded-2xl shadow-lg disabled:opacity-50 font-bold text-xs active:scale-95 transition-transform"
-        >
-          {isGenerating ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-file-pdf"></i>}
-          {isGenerating ? 'GERANDO...' : 'BAIXAR RELATÓRIO PDF'}
-        </button>
+        <div className="space-y-3">
+          <button
+            onClick={handleDownloadPDF}
+            disabled={isGenerating || filteredEntries.length === 0}
+            className="w-full gold-gradient text-white flex items-center justify-center gap-3 p-4 rounded-2xl shadow-lg disabled:opacity-50 font-bold text-xs active:scale-95 transition-transform"
+          >
+            {isGenerating ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-file-pdf"></i>}
+            {isGenerating ? 'GERANDO...' : 'BAIXAR RELATÓRIO PDF'}
+          </button>
+
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={handleSendWhatsApp}
+              disabled={filteredEntries.length === 0}
+              className="flex items-center justify-center gap-2 bg-emerald-500 text-white p-3 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-transform disabled:opacity-50"
+            >
+              <i className="fab fa-whatsapp"></i> WhatsApp
+            </button>
+            <button
+              onClick={handleSendEmail}
+              disabled={filteredEntries.length === 0}
+              className="flex items-center justify-center gap-2 bg-blue-600 text-white p-3 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-transform disabled:opacity-50"
+            >
+              <i className="fas fa-envelope"></i> E-mail
+            </button>
+          </div>
+          
+          <button
+            onClick={() => window.location.hash = '#dashboard'}
+            className="w-full bg-slate-50 border border-slate-200 text-slate-500 flex items-center justify-center gap-3 p-3 rounded-2xl font-bold text-[10px] uppercase tracking-widest active:scale-95 transition-transform"
+          >
+            <i className="fas fa-arrow-left"></i>
+            Voltar ao Início
+          </button>
+        </div>
 
         <div className="space-y-4">
           <h3 className="text-[10px] font-black text-blue-900 uppercase tracking-[0.2em] px-1">Registros no Período</h3>
@@ -146,13 +218,6 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
                       </span>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => handleDeleteEntry(entry.id)}
-                    className="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
-                    title="Apagar registro"
-                  >
-                    <i className="fas fa-trash-alt text-[10px]"></i>
-                  </button>
                 </div>
                 <p className="text-slate-600 text-xs italic leading-relaxed">
                   "{entry.notes}"
@@ -168,14 +233,16 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
             </div>
           )}
 
-          {hasMore && (
-            <button 
-              onClick={() => setVisibleCount(v => v + 10)} 
-              className="w-full py-6 text-[10px] font-black text-blue-900 uppercase tracking-[0.3em] hover:text-amber-600 transition-colors"
-            >
-              Carregar mais registros
-            </button>
-          )}
+          <div className="space-y-4 mt-6">
+            {hasMore && (
+              <button 
+                onClick={() => setVisibleCount(v => v + 10)} 
+                className="w-full py-4 text-[10px] font-black text-blue-900 uppercase tracking-[0.3em] hover:text-amber-600 transition-colors"
+              >
+                Carregar mais registros
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </Layout>

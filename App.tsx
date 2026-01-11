@@ -8,16 +8,18 @@ import NewEntry from './pages/NewEntry';
 import Reports from './pages/Reports';
 import Booking from './pages/Booking';
 import LogoGen from './pages/LogoGen';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const App: React.FC = () => {
   const [auth, setAuth] = useState<AuthState>({
     user: null,
     isAuthenticated: false,
   });
-  const [route, setRoute] = useState<string>(window.location.hash || '#login');
+  const [route, setRoute] = useState<string>(window.location.hash.split('?')[0] || '#login');
 
   useEffect(() => {
-    const handleHashChange = () => setRoute(window.location.hash);
+    const handleHashChange = () => setRoute(window.location.hash.split('?')[0]);
     window.addEventListener('hashchange', handleHashChange);
 
     const storedUser = localStorage.getItem('psicolog_session');
@@ -33,10 +35,11 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!auth.isAuthenticated && route !== '#register' && route !== '#login') {
+    const publicRoutes = ['#register', '#login', '#forgot-password', '#reset-password'];
+    if (!auth.isAuthenticated && !publicRoutes.includes(route)) {
       window.location.hash = '#login';
     }
-    if (auth.isAuthenticated && (route === '#login' || route === '#register')) {
+    if (auth.isAuthenticated && (route === '#login' || route === '#register' || route === '#forgot-password')) {
       window.location.hash = '#dashboard';
     }
   }, [auth.isAuthenticated, route]);
@@ -57,6 +60,10 @@ const App: React.FC = () => {
     switch (route) {
       case '#register':
         return <Register onRegisterSuccess={() => window.location.hash = '#login'} />;
+      case '#forgot-password':
+        return <ForgotPassword />;
+      case '#reset-password':
+        return <ResetPassword />;
       case '#dashboard':
         return auth.user ? <Dashboard user={auth.user} onLogout={handleLogout} /> : <Login onLogin={handleLogin} />;
       case '#new-entry':
