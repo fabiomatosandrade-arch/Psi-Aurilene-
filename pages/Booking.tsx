@@ -52,9 +52,9 @@ const Booking: React.FC<BookingProps> = ({ user }) => {
 
         <div className="pt-12 px-6">
           <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100">
-            <i className="fas fa-info-circle text-blue-900/20 text-2xl mb-3"></i>
-            <p className="text-[10px] text-slate-400 leading-relaxed uppercase tracking-widest font-bold">
-              O agendamento é realizado diretamente com a equipe de suporte para garantir a melhor data para você.
+            <i className="fas fa-calendar-alt text-blue-900/20 text-2xl mb-3"></i>
+            <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-widest font-bold">
+              Pronto para o próximo passo? O agendamento de sua sessão é realizado diretamente com a Dra. Aurilene Santiago para garantir um atendimento personalizado.
             </p>
           </div>
         </div>
