@@ -13,9 +13,16 @@ const moodToLabel = (mood: Mood) => {
   }
 };
 
+const formatDateProperly = (dateStr: string) => {
+  // Trata a data YYYY-MM-DD sem interferência de fuso horário
+  const [year, month, day] = dateStr.split('-');
+  return `${day}/${month}/${year}`;
+};
+
 export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
   const doc = new jsPDF();
-  const sortedEntries = [...entries].sort((a, b) => b.timestamp - a.timestamp);
+  // Ordena por data (string YYYY-MM-DD funciona bem para sort alfabético/numérico)
+  const sortedEntries = [...entries].sort((a, b) => b.date.localeCompare(a.date)).reverse();
 
   // Título Textual Elegante
   doc.setFontSize(24);
@@ -32,7 +39,12 @@ export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
   doc.setTextColor(100, 100, 100);
   doc.setFont('helvetica', 'normal');
   doc.text(`Paciente: ${user.fullName}`, 20, 60);
-  doc.text(`Período: ${new Date(sortedEntries[sortedEntries.length-1].date).toLocaleDateString()} a ${new Date(sortedEntries[0].date).toLocaleDateString()}`, 20, 66);
+  
+  if (sortedEntries.length > 0) {
+    const firstDate = formatDateProperly(sortedEntries[sortedEntries.length - 1].date);
+    const lastDate = formatDateProperly(sortedEntries[0].date);
+    doc.text(`Período: ${firstDate} a ${lastDate}`, 20, 66);
+  }
 
   doc.setDrawColor(212, 175, 55);
   doc.line(20, 72, 190, 72);
@@ -48,7 +60,7 @@ export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(184, 134, 11);
-    doc.text(new Date(entry.date).toLocaleDateString('pt-BR'), 20, y);
+    doc.text(formatDateProperly(entry.date), 20, y);
     
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(80, 80, 80);

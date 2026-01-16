@@ -14,7 +14,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
   const loadEntries = () => {
     const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
     const userEntries = allEntries.filter(e => e.userId === user.id)
-      .sort((a, b) => b.timestamp - a.timestamp);
+      .sort((a, b) => b.date.localeCompare(a.date)).reverse();
     setEntries(userEntries);
   };
 
@@ -40,6 +40,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       case Mood.EXCELLENT: return '😄';
       default: return '😶';
     }
+  };
+
+  const formatDateLabel = (dateStr: string) => {
+    const [y, m, d] = dateStr.split('-');
+    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    return `${d} ${months[parseInt(m)-1]}`;
   };
 
   return (
@@ -121,7 +127,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                 <div key={entry.id} className="relative bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:border-amber-200 transition-all group">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-[10px] font-black text-blue-900 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-wider">
-                      {new Date(entry.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
+                      {formatDateLabel(entry.date)}
                     </span>
                     <div className="flex items-center gap-2">
                       <button 

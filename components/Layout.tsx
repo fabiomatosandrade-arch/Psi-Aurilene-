@@ -30,8 +30,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
       <main className="flex-1 overflow-y-auto p-6 pb-40">
         {children}
         
-        {/* Footer com Destaque Máximo solicitado */}
-        <div className="mt-20 p-8 bg-blue-50/30 rounded-[2.5rem] border border-blue-100/50 text-center relative overflow-hidden">
+        {/* Footer com Destaque solicitado */}
+        <div className="mt-20 p-8 bg-blue-50/50 rounded-[2.5rem] border border-blue-100 text-center relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-24 h-24 gold-gradient opacity-10 rounded-full blur-2xl"></div>
           
           <h4 className="text-xl font-black text-blue-900 uppercase tracking-tight mb-2">
@@ -44,7 +44,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, actions }) => 
               href="https://www.psicologiaasantiago.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block px-6 py-3 bg-white border-2 border-amber-200 rounded-2xl text-[12px] font-black text-blue-900 uppercase tracking-widest shadow-lg shadow-amber-100 hover:shadow-amber-200 hover:border-amber-400 transition-all active:scale-95"
+              className="inline-block px-6 py-3 bg-white border-2 border-amber-200 rounded-2xl text-[12px] font-black text-blue-900 uppercase tracking-widest shadow-lg shadow-amber-100/50 hover:shadow-amber-200 hover:border-amber-400 transition-all active:scale-95"
             >
               psicologiaasantiago.com
             </a>

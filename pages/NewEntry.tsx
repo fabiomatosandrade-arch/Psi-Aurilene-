@@ -8,7 +8,16 @@ interface NewEntryProps {
 }
 
 const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  // Inicializa com a data local correta (YYYY-MM-DD)
+  const getLocalDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const [date, setDate] = useState(getLocalDate());
   const [notes, setNotes] = useState('');
   const [mood, setMood] = useState<Mood | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +42,7 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
     const newEntry: DailyEntry = {
       id: crypto.randomUUID(),
       userId: user.id,
-      date,
+      date, // Salva a data literal escolhida
       notes,
       mood,
       timestamp: Date.now()

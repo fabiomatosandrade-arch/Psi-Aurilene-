@@ -22,8 +22,9 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
 
   const loadEntries = () => {
     const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
+    // Ordena pela data literal decrescente
     const userEntries = allEntries.filter(e => e.userId === user.id)
-      .sort((a, b) => b.timestamp - a.timestamp);
+      .sort((a, b) => b.date.localeCompare(a.date));
     setAllUserEntries(userEntries);
   };
 
@@ -32,26 +33,31 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
   }, [user.id]);
 
   useEffect(() => {
-    const now = Date.now();
-    const periods = {
-      week: 7 * 24 * 60 * 60 * 1000,
-      month: 30 * 24 * 60 * 60 * 1000,
-      year: 365 * 24 * 60 * 60 * 1000,
-    };
-
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+    
     setValidationMsg(null);
     let filtered = [...allUserEntries];
 
     if (filter !== 'all') {
-      const threshold = now - periods[filter];
-      const result = allUserEntries.filter(e => e.timestamp >= threshold);
+      const msInDay = 24 * 60 * 60 * 1000;
+      let daysLimit = 0;
+      if (filter === 'week') daysLimit = 7;
+      if (filter === 'month') daysLimit = 30;
+      if (filter === 'year') daysLimit = 365;
+
+      const thresholdDate = new Date(today.getTime() - (daysLimit * msInDay));
       
-      if (result.length === 0 && allUserEntries.length > 0) {
+      filtered = allUserEntries.filter(e => {
+        const [y, m, d] = e.date.split('-').map(Number);
+        const entryDate = new Date(y, m - 1, d);
+        return entryDate >= thresholdDate;
+      });
+      
+      if (filtered.length === 0 && allUserEntries.length > 0) {
         const labels = { week: 'última semana', month: 'último mês', year: 'último ano' };
         setValidationMsg(`Atenção: Não há registros para a ${labels[filter]}. Mostrando todo o histórico.`);
         filtered = allUserEntries;
-      } else {
-        filtered = result;
       }
     }
 
@@ -68,6 +74,11 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
       case Mood.EXCELLENT: return { emoji: '😄', label: 'Muito Bem', color: 'text-emerald-500' };
       default: return { emoji: '😶', label: 'Indefinido', color: 'text-slate-300' };
     }
+  };
+
+  const formatDateLabel = (dateStr: string) => {
+    const [y, m, d] = dateStr.split('-');
+    return `${d}/${m}/${y}`;
   };
 
   const handleDownloadPDF = () => {
@@ -150,7 +161,7 @@ const Reports: React.FC<ReportsProps> = ({ user }) => {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-black text-slate-800">
-                      {new Date(entry.date).toLocaleDateString('pt-BR')}
+                      {formatDateLabel(entry.date)}
                     </span>
                     <span className="text-slate-300">•</span>
                     <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full">
