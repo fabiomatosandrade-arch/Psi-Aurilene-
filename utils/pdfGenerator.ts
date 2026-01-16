@@ -14,17 +14,20 @@ const moodToLabel = (mood: Mood) => {
 };
 
 const formatDateProperly = (dateStr: string) => {
-  // Trata a data YYYY-MM-DD sem interferência de fuso horário
-  const [year, month, day] = dateStr.split('-');
+  if (!dateStr) return '';
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const [year, month, day] = parts;
   return `${day}/${month}/${year}`;
 };
 
 export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
   const doc = new jsPDF();
-  // Ordena por data (string YYYY-MM-DD funciona bem para sort alfabético/numérico)
-  const sortedEntries = [...entries].sort((a, b) => b.date.localeCompare(a.date)).reverse();
+  
+  // Ordena por data literal (YYYY-MM-DD), do mais antigo para o mais novo para o relatório
+  const sortedEntries = [...entries].sort((a, b) => a.date.localeCompare(b.date));
 
-  // Título Textual Elegante
+  // Título
   doc.setFontSize(24);
   doc.setTextColor(30, 58, 138); // Azul Marinho
   doc.setFont('helvetica', 'bold');
@@ -41,8 +44,8 @@ export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
   doc.text(`Paciente: ${user.fullName}`, 20, 60);
   
   if (sortedEntries.length > 0) {
-    const firstDate = formatDateProperly(sortedEntries[sortedEntries.length - 1].date);
-    const lastDate = formatDateProperly(sortedEntries[0].date);
+    const firstDate = formatDateProperly(sortedEntries[0].date);
+    const lastDate = formatDateProperly(sortedEntries[sortedEntries.length - 1].date);
     doc.text(`Período: ${firstDate} a ${lastDate}`, 20, 66);
   }
 
@@ -59,19 +62,20 @@ export const generateReportPDF = (user: User, entries: DailyEntry[]) => {
 
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(184, 134, 11);
+    doc.setTextColor(30, 58, 138);
     doc.text(formatDateProperly(entry.date), 20, y);
     
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(80, 80, 80);
+    doc.setTextColor(184, 134, 11);
     doc.text(`Humor: ${moodToLabel(entry.mood)}`, 150, y);
 
-    y += 6;
+    y += 7;
+    doc.setTextColor(60, 60, 60);
     const notes = doc.splitTextToSize(entry.notes, 170);
     doc.text(notes, 20, y);
     
-    y += (notes.length * 5) + 12;
-    doc.setDrawColor(240, 240, 240);
+    y += (notes.length * 6) + 12;
+    doc.setDrawColor(230, 230, 230);
     doc.line(20, y-6, 190, y-6);
   });
 

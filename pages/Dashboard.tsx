@@ -13,8 +13,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
 
   const loadEntries = () => {
     const allEntries: DailyEntry[] = JSON.parse(localStorage.getItem('psicolog_entries') || '[]');
+    // Filtra e ordena: mais recentes primeiro
     const userEntries = allEntries.filter(e => e.userId === user.id)
-      .sort((a, b) => b.date.localeCompare(a.date)).reverse();
+      .sort((a, b) => b.date.localeCompare(a.date));
     setEntries(userEntries);
   };
 
@@ -43,6 +44,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
   };
 
   const formatDateLabel = (dateStr: string) => {
+    if (!dateStr) return '';
     const [y, m, d] = dateStr.split('-');
     const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
     return `${d} ${months[parseInt(m)-1]}`;
@@ -82,7 +84,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           </div>
         </div>
 
-        {/* Seção Terapia Atualizada conforme solicitação */}
+        {/* Seção Terapia Atualizada conforme pedido */}
         <div className="bg-white border-2 border-slate-100 p-6 rounded-[2rem] flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 brand-gradient rounded-2xl flex items-center justify-center text-amber-400 shadow-inner">

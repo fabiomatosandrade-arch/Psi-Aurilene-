@@ -8,16 +8,16 @@ interface NewEntryProps {
 }
 
 const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
-  // Inicializa com a data local correta (YYYY-MM-DD)
-  const getLocalDate = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
+  // Inicializa com a data local correta literal
+  const getLocalDateString = () => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
 
-  const [date, setDate] = useState(getLocalDate());
+  const [date, setDate] = useState(getLocalDateString());
   const [notes, setNotes] = useState('');
   const [mood, setMood] = useState<Mood | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,7 +42,7 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
     const newEntry: DailyEntry = {
       id: crypto.randomUUID(),
       userId: user.id,
-      date, // Salva a data literal escolhida
+      date, // Salva a data literal escolhida pelo usuário
       notes,
       mood,
       timestamp: Date.now()
@@ -63,31 +63,31 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
     <Layout title="Novo Registro" onBack={() => window.location.hash = '#dashboard'}>
       <form onSubmit={handleSubmit} className="space-y-8 pb-10">
         <section>
-          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Data do Registro *</label>
+          <label className="block text-[10px] font-black text-blue-900 uppercase tracking-widest mb-2 ml-1">Data do Registro (Clique para alterar) *</label>
           <input
             type="date"
             required
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none shadow-sm transition-all text-sm font-medium"
+            className="w-full px-4 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none shadow-sm transition-all text-sm font-bold text-blue-900"
           />
         </section>
 
         <section>
-          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Como foi seu dia? *</label>
+          <label className="block text-[10px] font-black text-blue-900 uppercase tracking-widest mb-2 ml-1">Como foi seu dia? *</label>
           <textarea
             required
             rows={6}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Conte um pouco sobre o que passou hoje..."
-            className="w-full px-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none shadow-sm resize-none text-sm min-h-[160px]"
+            className="w-full px-4 py-4 bg-white border-2 border-slate-100 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none shadow-sm resize-none text-sm min-h-[160px]"
           ></textarea>
         </section>
 
         <section>
-          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 text-center">Como está seu humor hoje?</label>
-          <div className="grid grid-cols-5 gap-2 bg-slate-50/50 p-2 rounded-3xl border border-slate-100">
+          <label className="block text-[10px] font-black text-blue-900 uppercase tracking-widest mb-4 text-center">Como está seu humor hoje?</label>
+          <div className="grid grid-cols-5 gap-2 bg-slate-50 p-2 rounded-3xl">
             {moods.map((m) => (
               <button
                 key={m.value}
@@ -96,7 +96,7 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
                 className={`flex flex-col items-center justify-center p-2 py-4 rounded-2xl transition-all ${
                   mood === m.value 
                     ? `${m.color} ring-2 ${m.activeColor} scale-110 shadow-lg z-10` 
-                    : 'bg-white/80 opacity-60 hover:opacity-100'
+                    : 'bg-white opacity-60 hover:opacity-100 shadow-sm'
                 }`}
               >
                 <span className="text-4xl mb-1">{m.emoji}</span>
@@ -109,7 +109,7 @@ const NewEntry: React.FC<NewEntryProps> = ({ user }) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full gold-gradient text-white font-black py-4 rounded-2xl shadow-lg hover:shadow-amber-200/50 active:scale-[0.98] disabled:opacity-50 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+          className="w-full gold-gradient text-blue-900 font-black py-4 rounded-2xl shadow-lg hover:shadow-amber-200/50 active:scale-[0.98] disabled:opacity-50 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
         >
           {isSubmitting ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-save"></i>}
           {isSubmitting ? 'Salvando...' : 'Salvar Registro'}
